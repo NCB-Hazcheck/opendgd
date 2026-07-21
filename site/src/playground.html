@@ -1,0 +1,98 @@
+<section class="band" id="try">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Playground</p>
+        <h2>Build a full declaration in your browser.</h2>
+        <p class="sub">Fill in the consignment and its dangerous goods lines. OpenDGD renders the complete IMO Multimodal Dangerous Goods Form live, box 14 composed by the canonical algorithm, and gives you a valid OpenDGD document to copy. Everything stays in your browser.</p>
+      </div>
+
+      <div class="pg-top">
+        <div class="pg-examples">
+          <button type="button" data-ex="acetone">Load acetone</button>
+          <button type="button" data-ex="lithium">Load 2-line example</button>
+          <button type="button" data-ex="radioactive">Load radioactive (Class 7)</button>
+          <button type="button" data-ex="clear" class="ghost">Clear</button>
+        </div>
+      </div>
+
+      <div class="pg">
+        <div class="pg-inputs">
+          <div class="group">
+            <h4>Parties <span class="hint">boxes 1 · 6 · 7</span></h4>
+            <div class="group-body">
+              <div class="fld wide"><label for="s-shipper-name">Shipper / consignor</label><input id="s-shipper-name" placeholder="Example Shipper Ltd"></div>
+              <div class="fld wide"><label for="s-shipper-addr">Shipper address</label><input id="s-shipper-addr" placeholder="1 Example Way, Felixstowe"></div>
+              <div class="fld wide"><label for="s-consignee-name">Consignee</label><input id="s-consignee-name" placeholder="Example Consignee BV"></div>
+              <div class="fld wide"><label for="s-consignee-addr">Consignee address</label><input id="s-consignee-addr" placeholder="Example Kade, Rotterdam"></div>
+              <div class="fld wide"><label for="s-carrier-name">Carrier</label><input id="s-carrier-name" placeholder="Example Container Line"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <h4>References &amp; transport <span class="hint">boxes 2 · 4 · 5 · 9 to 13</span></h4>
+            <div class="group-body">
+              <div class="fld"><label for="s-tdn">Transport document no.</label><input id="s-tdn" placeholder="BOL-EXAMPLE-0001"></div>
+              <div class="fld"><label for="s-shipref">Shipper's reference</label><input id="s-shipref" placeholder="REF-EXAMPLE-0001"></div>
+              <div class="fld"><label for="s-fwdref">Forwarder's reference</label><input id="s-fwdref" placeholder="optional"></div>
+              <div class="fld"><label for="s-voyage">Voyage number</label><input id="s-voyage" placeholder="V001"></div>
+              <div class="fld"><label for="s-vessel">Vessel</label><input id="s-vessel" placeholder="MV EXAMPLE"></div>
+              <div class="fld"><label for="s-sailing">Sailing date</label><input id="s-sailing" type="date"></div>
+              <div class="fld"><label for="s-pol">Port of loading</label><input id="s-pol" placeholder="Felixstowe"></div>
+              <div class="fld"><label for="s-pod">Port of discharge</label><input id="s-pod" placeholder="Rotterdam"></div>
+              <div class="fld"><label for="s-dest">Destination</label><input id="s-dest" placeholder="Rotterdam"></div>
+              <div class="fld wide"><label for="s-ahi">Additional handling information (box 9)</label><input id="s-ahi" placeholder="optional"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <h4>Container / CTU <span class="hint">boxes 15 to 19</span></h4>
+            <div class="group-body">
+              <div class="fld"><label for="s-ctu">Container id / vehicle reg</label><input id="s-ctu" placeholder="EXMU 000000-0"></div>
+              <div class="fld"><label for="s-seal">Seal number(s)</label><input id="s-seal" placeholder="SEAL-0001"></div>
+              <div class="fld"><label for="s-size">Size &amp; type</label><input id="s-size" placeholder="40' GP"></div>
+              <div class="fld"><label for="s-tare">Tare mass kg</label><input id="s-tare" inputmode="numeric" placeholder="3800"></div>
+              <div class="fld"><label for="s-gross">Total gross kg (auto if blank)</label><input id="s-gross" inputmode="numeric" placeholder="computed"></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <h4>Dangerous goods <span class="hint">box 14</span></h4>
+            <div class="dglines" id="dglines"></div>
+            <button type="button" class="addline" id="addline">+ Add another dangerous goods line</button>
+          </div>
+
+          <div class="group">
+            <h4>Signatures <span class="hint">boxes 20 · 22</span></h4>
+            <div class="group-body">
+              <div class="fld"><label for="s-decl-company">Shipper decl. company (22)</label><input id="s-decl-company" placeholder="Example Shipper Ltd"></div>
+              <div class="fld"><label for="s-decl-name">Declarant name</label><input id="s-decl-name" placeholder="A. Example, Shipping Manager"></div>
+              <div class="fld"><label for="s-decl-place">Place and date</label><input id="s-decl-place" placeholder="Felixstowe, 2026-07-21"></div>
+              <div class="fld"><label for="s-decl-sign">Signature (upper case)</label><input id="s-decl-sign" placeholder="A EXAMPLE"></div>
+              <div class="fld"><label for="s-pack-company">Packing cert. company (20)</label><input id="s-pack-company" placeholder="Example Shipper Ltd"></div>
+              <div class="fld"><label for="s-pack-name">Packer declarant</label><input id="s-pack-name" placeholder="B. Example, Supervisor"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pg-preview">
+          <div class="imo-wrap" id="imo-print">
+            <div class="imo-cap"><span class="t">IMO Multimodal Dangerous Goods Form</span><span class="r">preview · not valid for transport</span></div>
+            <div class="imo" id="imo"></div>
+            <div class="imo-foot">Box 14 goods descriptions composed per rendering.md. A validated, print-ready PDF comes from the reference API or a conforming validator.</div>
+          </div>
+
+          <div class="json-card">
+            <div class="json-head"><span class="t">OpenDGD document</span><span class="pill" id="o-valid">checking</span></div>
+            <textarea id="o-json" readonly spellcheck="false"></textarea>
+            <div class="json-actions">
+              <button type="button" id="o-copy">Copy JSON</button>
+              <button type="button" id="o-download">Download .json</button>
+              <button type="button" id="o-docx">Download DOCX</button>
+              <button type="button" id="o-pdf">Export PDF</button>
+              <span class="copied" id="o-copied">Copied</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

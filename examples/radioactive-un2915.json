@@ -1,0 +1,98 @@
+{
+  "openDgdVersion": "0.1",
+  "documentType": "IMO_MULTIMODAL_DANGEROUS_GOODS_FORM",
+  "documentReference": "DGD-EXAMPLE-0003",
+  "issueDate": "2026-07-21",
+  "regulation": {
+    "code": "IMDG",
+    "edition": "42-24"
+  },
+  "consignment": {
+    "parties": {
+      "shipper": {
+        "name": "Example Isotopes Ltd",
+        "address": "1 Example Park, Example City"
+      },
+      "consignee": {
+        "name": "Example Medical Centre",
+        "address": "2 Example Road, Example City"
+      },
+      "carrier": {
+        "name": "Example Container Line"
+      }
+    },
+    "references": {
+      "transportDocumentNumber": "BOL-EXAMPLE-0003"
+    },
+    "transport": {
+      "modeOfTransport": "sea",
+      "shipType": "cargo",
+      "vessel": "MV EXAMPLE",
+      "voyageNumber": "V002",
+      "sailingDate": "2026-07-28",
+      "portOfLoading": "Southampton",
+      "portOfDischarge": "New York",
+      "destination": "New York"
+    },
+    "cargoTransportUnit": {
+      "unitType": "container",
+      "identificationNumber": "EXRU 000000-0",
+      "sealNumbers": "SEAL-0003",
+      "sizeType": "20' GP",
+      "tareMassKg": 2100,
+      "totalGrossMassKg": 2260
+    },
+    "dangerousGoods": [
+      {
+        "lineReference": "L1",
+        "unNumber": "2915",
+        "properShippingName": "RADIOACTIVE MATERIAL, TYPE A PACKAGE",
+        "class": [
+          "7"
+        ],
+        "marks": "EXAMPLE RA 01",
+        "packaging": {
+          "numberOfPackages": 2,
+          "kindOfPackages": "Type A packages"
+        },
+        "weights": {
+          "grossMassKg": 160,
+          "netMassKg": 40
+        },
+        "cubeM3": 0.5,
+        "emergencySchedule": {
+          "fire": "F-I",
+          "spillage": "S-S"
+        },
+        "radioactive": {
+          "radionuclide": "Cobalt-60",
+          "description": "Sealed source, solid, special form",
+          "activity": "3.7 GBq",
+          "category": "II-YELLOW",
+          "transportIndex": 0.5,
+          "specialForm": true,
+          "isFissile": false,
+          "packageType": "A",
+          "overpack": false,
+          "competentAuthorityReferences": [
+            "GB/1234/S"
+          ]
+        },
+        "permits": [
+          {
+            "type": "competent-authority",
+            "value": "GB/1234/AF"
+          }
+        ]
+      }
+    ],
+    "certificates": {
+      "shipperDeclaration": {
+        "companyName": "Example Isotopes Ltd",
+        "declarantName": "D. Example, RPA",
+        "placeAndDate": "Southampton, 2026-07-21",
+        "signature": "D EXAMPLE"
+      }
+    }
+  }
+}

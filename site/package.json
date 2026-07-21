@@ -1,0 +1,14 @@
+{
+  "name": "opendgd-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The opendgd.org website: a small static generator for the OpenDGD standard.",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node build.mjs && python3 -m http.server --directory dist 8788"
+  },
+  "devDependencies": {
+    "marked": "^12.0.2"
+  }
+}

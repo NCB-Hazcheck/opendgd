@@ -1,0 +1,36 @@
+OpenDGD — Licensing
+===================
+
+OpenDGD is published by NCB Hazcheck (a National Cargo Bureau company). It is
+distributed under a dual licence so that the standard is free to read, cite and
+implement, and the reference code is free to reuse.
+
+1. Specification and normative artefacts — CC BY 4.0
+----------------------------------------------------
+The following are licensed under the Creative Commons Attribution 4.0
+International licence (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/ :
+
+  - spec/SPEC.md
+  - spec/opendgd.schema.json
+  - spec/rendering.md
+  - spec/openapi.yaml
+  - the documentation under docs/
+
+You are free to share and adapt these for any purpose, including commercially,
+provided you give appropriate credit to "OpenDGD by NCB Hazcheck" and link to
+https://opendgd.org.
+
+2. Reference code, examples and conformance suite — Apache-2.0
+-------------------------------------------------------------
+All source code, the examples under examples/, and the conformance suite (when
+published under spec/conformance/) are licensed under the Apache License,
+Version 2.0, https://www.apache.org/licenses/LICENSE-2.0 .
+
+3. Trademarks
+-------------
+"OpenDGD", "NCB Hazcheck", "Hazcheck" and "National Cargo Bureau" and their
+associated logos are marks of their respective owners. The licences above grant
+no trademark rights. Do not imply endorsement or conformance without following
+the process in GOVERNANCE.md.
+
+SPDX-License-Identifier: CC-BY-4.0 AND Apache-2.0

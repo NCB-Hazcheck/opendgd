@@ -1,0 +1,30 @@
+{
+  "name": "@opendgd/render",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Render an OpenDGD document to the IMO Multimodal Dangerous Goods Form (DOCX and PDF). The template and box-14 rendering are part of the OpenDGD standard, so the output document is the same on every implementation.",
+  "license": "Apache-2.0",
+  "main": "src/render.mjs",
+  "exports": {
+    ".": "./src/render.mjs"
+  },
+  "bin": {
+    "opendgd-render": "cli.mjs"
+  },
+  "files": [
+    "src",
+    "cli.mjs",
+    "server.mjs",
+    "scripts"
+  ],
+  "scripts": {
+    "start": "node server.mjs",
+    "convert-template": "node scripts/convert-template.mjs"
+  },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "docxtemplater": "^3.69.0",
+    "pizzip": "^3.2.0"
+  }
+}

@@ -1,0 +1,23 @@
+# Website build (docs/ site, added later)
+node_modules/
+dist/
+.astro/
+.vitepress/cache/
+.vite/
+
+# Env / tooling
+.venv/
+venv/
+v/
+*.log
+.DS_Store
+
+# Editor
+.idea/
+.vscode/
+
+# Local screenshots / playwright output
+*.png
+.playwright-mcp/
+*.jpeg
+*.jpg

@@ -1,0 +1,95 @@
+{
+  "openDgdVersion": "0.1",
+  "documentType": "IMO_MULTIMODAL_DANGEROUS_GOODS_FORM",
+  "documentReference": "DGD-EXAMPLE-0001",
+  "issueDate": "2026-07-21",
+  "regulation": {
+    "code": "IMDG",
+    "edition": "42-24"
+  },
+  "consignment": {
+    "parties": {
+      "shipper": {
+        "name": "Example Shipper Ltd",
+        "address": "1 Example Way, Felixstowe, IP11 0AA, United Kingdom",
+        "emergencyContact": {
+          "name": "Example 24h Response",
+          "telephone": "+00 0000 000000"
+        }
+      },
+      "consignee": {
+        "name": "Example Consignee BV",
+        "address": "Example Kade 1, Rotterdam, Netherlands"
+      },
+      "carrier": {
+        "name": "Example Container Line"
+      }
+    },
+    "references": {
+      "transportDocumentNumber": "BOL-EXAMPLE-0001",
+      "shippersReference": "REF-EXAMPLE-0001"
+    },
+    "transport": {
+      "modeOfTransport": "sea",
+      "shipType": "cargo",
+      "vessel": "MV EXAMPLE",
+      "voyageNumber": "V001",
+      "sailingDate": "2026-07-25",
+      "portOfLoading": "Felixstowe",
+      "portOfDischarge": "Rotterdam",
+      "destination": "Rotterdam"
+    },
+    "cargoTransportUnit": {
+      "unitType": "container",
+      "identificationNumber": "EXMU 000000-0",
+      "sealNumbers": "SEAL-0001",
+      "sizeType": "40' GP",
+      "tareMassKg": 3800,
+      "totalGrossMassKg": 6150
+    },
+    "dangerousGoods": [
+      {
+        "lineReference": "L1",
+        "unNumber": "1090",
+        "properShippingName": "ACETONE",
+        "class": [
+          "3"
+        ],
+        "packingGroup": "II",
+        "marks": "EXAMPLE LOT 44",
+        "packaging": {
+          "numberOfPackages": 10,
+          "kindOfPackages": "Steel drums",
+          "outerPackagingCode": "1A1"
+        },
+        "weights": {
+          "grossMassKg": 2350,
+          "netMassKg": 2000
+        },
+        "cubeM3": 2.4,
+        "flashpoint": {
+          "valueCelsius": -17,
+          "cup": "closed"
+        },
+        "emergencySchedule": {
+          "fire": "F-E",
+          "spillage": "S-D"
+        }
+      }
+    ],
+    "certificates": {
+      "shipperDeclaration": {
+        "companyName": "Example Shipper Ltd",
+        "declarantName": "A. Example, Shipping Manager",
+        "placeAndDate": "Felixstowe, 2026-07-21",
+        "signature": "A EXAMPLE"
+      },
+      "containerPackingCertificate": {
+        "companyName": "Example Shipper Ltd",
+        "declarantName": "B. Example, Warehouse Supervisor",
+        "placeAndDate": "Felixstowe, 2026-07-21",
+        "signature": "B EXAMPLE"
+      }
+    }
+  }
+}

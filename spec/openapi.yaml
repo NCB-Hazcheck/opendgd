@@ -1,0 +1,157 @@
+openapi: 3.1.0
+info:
+  title: OpenDGD API
+  version: "0.1"
+  summary: The endpoints a user of the OpenDGD standard calls to check a declaration and get the form back.
+  description: |
+    OpenDGD defines an open, machine-readable format for a Dangerous Goods Declaration under the
+    IMDG Code (see `opendgd.schema.json`) and a canonical way to render it as the IMO Multimodal
+    Dangerous Goods Form (see `rendering.md` and `form/`). The rendered document is part of the
+    standard, so the same declaration produces the same DOCX and the same PDF on any conforming
+    implementation.
+
+    The surface is deliberately small:
+
+      * **conformance**: does the document conform to the OpenDGD standard? (structure and required
+        fields). This is *not* a regulatory check of whether the goods are safe to ship; that is a
+        validator's job (e.g. Hazcheck Validate).
+      * **docx**: the completed IMO form as an editable Word document.
+      * **pdf**: the completed IMO form as a PDF.
+
+    The reference render service is `tools/render-dgd`. The canonical hosted instance is
+    `https://api.opendgd.org`.
+  license:
+    name: OpenDGD Specification License (CC BY 4.0)
+    url: https://creativecommons.org/licenses/by/4.0/
+  contact:
+    name: OpenDGD
+    url: https://opendgd.org
+
+servers:
+  - url: https://api.opendgd.org/v1
+    description: OpenDGD reference render service
+  - url: https://api.hazcheck.com/v1/opendgd
+    description: NCB Hazcheck reference implementation
+
+tags:
+  - name: Spec
+    description: Retrieve the machine-readable specification.
+  - name: Declarations
+    description: Check conformance and render declarations to the IMO form.
+
+paths:
+  /schema:
+    get:
+      tags: [Spec]
+      operationId: getSchema
+      summary: Fetch the OpenDGD JSON Schema.
+      parameters:
+        - name: version
+          in: query
+          required: false
+          schema: { type: string, default: "0.1" }
+      responses:
+        "200":
+          description: The JSON Schema document.
+          content:
+            application/schema+json:
+              schema: { type: object }
+
+  /declarations/conformance:
+    post:
+      tags: [Declarations]
+      operationId: checkConformance
+      summary: Check that a declaration conforms to the OpenDGD standard.
+      description: |
+        Checks the document against the OpenDGD schema: correct structure, required fields present,
+        allowed values. It does **not** check whether the goods are correctly classified or safe to
+        ship under the IMDG Code, that is regulatory validation, done by a validator such as Hazcheck
+        Validate. Free, no engine required.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "opendgd.schema.json" }
+      responses:
+        "200":
+          description: The conformance result.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConformanceResult" }
+
+  /declarations/docx:
+    post:
+      tags: [Declarations]
+      operationId: exportDeclarationDocx
+      summary: Render a declaration to the IMO form as an editable DOCX.
+      description: |
+        Fills the standard form template (`form/`) from the declaration, composing the box-14 goods
+        description per `rendering.md`, and returns the IMO Multimodal Dangerous Goods Form as a Word
+        document. The same declaration yields the same document on every conforming implementation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "opendgd.schema.json" }
+      responses:
+        "200":
+          description: The IMO form as a DOCX.
+          content:
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema: { type: string, format: binary }
+        "400":
+          description: The document does not conform to the standard.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConformanceResult" }
+
+  /declarations/pdf:
+    post:
+      tags: [Declarations]
+      operationId: exportDeclarationPdf
+      summary: Render a declaration to the IMO form as a PDF.
+      description: |
+        Fills the standard form template and returns the IMO Multimodal Dangerous Goods Form as a PDF,
+        converted from the DOCX by a LibreOffice unoserver. The same declaration yields the same
+        document on every conforming implementation. A validating implementation (e.g. Hazcheck
+        Validate) may additionally return a QR-stamped, validated PDF.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "opendgd.schema.json" }
+      responses:
+        "200":
+          description: The IMO form as a PDF.
+          content:
+            application/pdf:
+              schema: { type: string, format: binary }
+        "400":
+          description: The document does not conform to the standard.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ConformanceResult" }
+
+components:
+  schemas:
+    ConformanceResult:
+      type: object
+      properties:
+        conforms:
+          type: boolean
+          description: Whether the document conforms to the OpenDGD schema.
+        findings:
+          type: array
+          items: { $ref: "#/components/schemas/Finding" }
+      required: [conforms, findings]
+
+    Finding:
+      type: object
+      properties:
+        severity: { type: string, enum: [error, warning, info] }
+        code: { type: string, description: "Machine code, e.g. OPENDGD-SCHEMA." }
+        message: { type: string }
+        jsonPointer:
+          type: string
+          description: RFC 6901 pointer to the offending location, e.g. /consignment/dangerousGoods/0/class.
+      required: [severity, message]

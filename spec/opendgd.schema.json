@@ -1,0 +1,652 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opendgd.org/spec/v0.1/opendgd.schema.json",
+  "title": "OpenDGD Declaration",
+  "description": "OpenDGD v0.1 — an open, machine-readable format for a Dangerous Goods Declaration under the IMDG Code, structured to render the IMO/UN Multimodal Dangerous Goods Form (IMDG Code 5.4.5). A producer supplies structured line data; any conforming implementation renders the same box-14 goods description via the canonical rendering algorithm (see rendering.md).",
+  "type": "object",
+  "required": [
+    "openDgdVersion",
+    "documentType",
+    "regulation",
+    "consignment"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "openDgdVersion": {
+      "type": "string",
+      "description": "The OpenDGD spec version this document conforms to.",
+      "const": "0.1"
+    },
+    "documentType": {
+      "type": "string",
+      "description": "The physical form this declaration is rendered onto. Only the IMO/UN multimodal form is defined in v0.1.",
+      "enum": ["IMO_MULTIMODAL_DANGEROUS_GOODS_FORM"]
+    },
+    "documentReference": {
+      "type": "string",
+      "description": "The declaration's own unique reference, assigned by the producer.",
+      "maxLength": 70
+    },
+    "issueDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the declaration was issued (ISO 8601, yyyy-mm-dd)."
+    },
+    "regulation": { "$ref": "#/$defs/regulation" },
+    "consignment": { "$ref": "#/$defs/consignment" },
+    "extensions": {
+      "type": "object",
+      "description": "Namespaced vendor/implementation extensions. Keys SHOULD be reverse-DNS (e.g. 'com.hazcheck.validationId'). Consumers MUST ignore unknown keys.",
+      "additionalProperties": true
+    }
+  },
+
+  "$defs": {
+
+    "regulation": {
+      "type": "object",
+      "description": "The regulatory basis for the declaration. v0.1 covers the IMDG Code (sea). The shape is deliberately extensible to ADR/RID/49 CFR/IATA in later versions.",
+      "required": ["code", "edition"],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": ["IMDG"],
+          "description": "Regulatory code. v0.1 is IMDG-only."
+        },
+        "edition": {
+          "type": "string",
+          "description": "The IMDG amendment applied, e.g. '42-24' or '41-22'.",
+          "examples": ["42-24", "41-22"]
+        }
+      }
+    },
+
+    "consignment": {
+      "type": "object",
+      "description": "The whole shipment: the parties, transport itinerary, the cargo transport unit, and the dangerous (and any non-dangerous) goods it carries.",
+      "required": ["parties", "cargoTransportUnit", "dangerousGoods"],
+      "additionalProperties": false,
+      "properties": {
+        "parties": { "$ref": "#/$defs/parties" },
+        "references": { "$ref": "#/$defs/references" },
+        "transport": { "$ref": "#/$defs/transport" },
+        "cargoTransportUnit": { "$ref": "#/$defs/cargoTransportUnit" },
+        "dangerousGoods": {
+          "type": "array",
+          "description": "The dangerous goods line items (box 14). At least one is required for a dangerous goods declaration.",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/dangerousGoodsItem" }
+        },
+        "nonDangerousGoods": {
+          "type": "array",
+          "description": "Optional non-dangerous goods lines carried in the same CTU.",
+          "items": { "$ref": "#/$defs/nonDangerousGoodsItem" }
+        },
+        "additionalHandlingInformation": {
+          "type": "string",
+          "description": "Free-text notes from the shipper to the carrier(s) (e.g. emergency response instructions, CAA references).",
+          "maxLength": 4000
+        },
+        "additionalCargoNotes": {
+          "type": "string",
+          "description": "Additional notes appended to the end of the goods section (box 14).",
+          "maxLength": 4000
+        },
+        "certificates": { "$ref": "#/$defs/certificates" }
+      }
+    },
+
+    "parties": {
+      "type": "object",
+      "description": "The commercial and transport parties. Shipper/consignor is mandatory.",
+      "required": ["shipper"],
+      "additionalProperties": false,
+      "properties": {
+        "shipper": {
+          "allOf": [{ "$ref": "#/$defs/party" }],
+          "description": "The consignor preparing the declaration (box 1)."
+        },
+        "consignee": {
+          "allOf": [{ "$ref": "#/$defs/party" }],
+          "description": "The party receiving the cargo (box 2)."
+        },
+        "carrier": {
+          "allOf": [{ "$ref": "#/$defs/party" }],
+          "description": "The party (or parties) transporting the cargo."
+        },
+        "freightForwarder": { "$ref": "#/$defs/party" },
+        "notifyParty": { "$ref": "#/$defs/party" }
+      }
+    },
+
+    "party": {
+      "type": "object",
+      "description": "A named organisation with an address and, optionally, a 24-hour emergency contact.",
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "maxLength": 200 },
+        "address": {
+          "type": "string",
+          "description": "Full postal address as a single string, newlines permitted. A structured address MAY be supplied additionally under 'structuredAddress'.",
+          "maxLength": 1000
+        },
+        "structuredAddress": { "$ref": "#/$defs/structuredAddress" },
+        "contact": { "$ref": "#/$defs/contact" },
+        "emergencyContact": {
+          "allOf": [{ "$ref": "#/$defs/contact" }],
+          "description": "24-hour emergency contact for this party, where applicable."
+        }
+      }
+    },
+
+    "structuredAddress": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "line1": { "type": "string", "maxLength": 200 },
+        "line2": { "type": "string", "maxLength": 200 },
+        "city": { "type": "string", "maxLength": 100 },
+        "region": { "type": "string", "maxLength": 100 },
+        "postalCode": { "type": "string", "maxLength": 20 },
+        "countryCode": {
+          "type": "string",
+          "description": "ISO 3166-1 alpha-2 country code.",
+          "pattern": "^[A-Z]{2}$"
+        }
+      }
+    },
+
+    "contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "maxLength": 200 },
+        "telephone": { "type": "string", "maxLength": 50 },
+        "email": { "type": "string", "format": "email", "maxLength": 200 }
+      }
+    },
+
+    "references": {
+      "type": "object",
+      "description": "Commercial and transport document references (boxes 7–8).",
+      "additionalProperties": false,
+      "properties": {
+        "transportDocumentNumber": {
+          "type": "string",
+          "description": "Bill of lading / transport document number.",
+          "maxLength": 70
+        },
+        "shippersReference": { "type": "string", "maxLength": 70 },
+        "freightForwardersReference": { "type": "string", "maxLength": 70 }
+      }
+    },
+
+    "transport": {
+      "type": "object",
+      "description": "The transport itinerary (boxes 9–13). v0.1 assumes a sea leg.",
+      "additionalProperties": false,
+      "properties": {
+        "modeOfTransport": {
+          "type": "string",
+          "enum": ["sea"],
+          "default": "sea",
+          "description": "v0.1 is sea-only; enum is reserved for future multimodal editions."
+        },
+        "shipType": {
+          "type": "string",
+          "enum": ["cargo", "passenger"],
+          "default": "cargo",
+          "description": "Whether the sea leg is a cargo or passenger ship. Affects stowage requirements applied by validators."
+        },
+        "vessel": { "type": "string", "maxLength": 200, "description": "Vessel name (box 11)." },
+        "voyageNumber": { "type": "string", "maxLength": 70, "description": "Voyage number (box 10)." },
+        "sailingDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Sailing date, ISO 8601 yyyy-mm-dd (box 12)."
+        },
+        "placeOfReceipt": { "type": "string", "maxLength": 200 },
+        "portOfLoading": { "type": "string", "maxLength": 200, "description": "Place/port of loading (box 11)." },
+        "portOfDischarge": { "type": "string", "maxLength": 200, "description": "Place/port of discharge (box 12)." },
+        "destination": { "type": "string", "maxLength": 200, "description": "Final destination / place of delivery (box 13)." }
+      }
+    },
+
+    "cargoTransportUnit": {
+      "type": "object",
+      "description": "The container, vehicle or tank carrying the goods (boxes 15–19).",
+      "additionalProperties": false,
+      "properties": {
+        "unitType": {
+          "type": "string",
+          "enum": ["container", "vehicle", "tank", "reefer", "heated", "bulk", "open", "other"],
+          "default": "container"
+        },
+        "tankType": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Tank/portable-tank instruction or type where the unit is a tank (e.g. 'T11')."
+        },
+        "temperatureControl": { "$ref": "#/$defs/ctuTemperatureControl" },
+        "volumeM3": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Internal volume of the CTU in cubic metres, where declared."
+        },
+        "identificationNumber": {
+          "type": "string",
+          "description": "Container identification number or vehicle registration number (box 15).",
+          "maxLength": 70
+        },
+        "sealNumbers": { "type": "string", "maxLength": 200, "description": "Seal number(s) (box 16)." },
+        "sizeType": {
+          "type": "string",
+          "description": "Container/vehicle size & type — an ISO 6346 size-type code or its description, e.g. '22G1' or \"40' GP\" (box 17).",
+          "maxLength": 100
+        },
+        "tareMassKg": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Tare mass of the CTU in kilograms (box 18)."
+        },
+        "totalGrossMassKg": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Total gross mass including tare, in kilograms (box 19). If omitted, an implementation MAY compute it as the sum of all line gross masses plus tareMassKg."
+        }
+      }
+    },
+
+    "dangerousGoodsItem": {
+      "type": "object",
+      "description": "A single dangerous goods line (box 14). Producers supply structured data; the canonical rendering algorithm composes the goods-description text. A pre-rendered 'descriptionOverride' MAY be supplied when the producer already holds the exact wording.",
+      "required": ["unNumber", "properShippingName", "class"],
+      "additionalProperties": false,
+      "properties": {
+        "lineReference": {
+          "type": "string",
+          "description": "Producer's reference for this line, echoed back on validation results.",
+          "maxLength": 70
+        },
+        "unNumber": {
+          "type": "string",
+          "description": "UN number (four digits) or, for a domestic North American entry, an NA number.",
+          "pattern": "^(UN|NA)?\\s?\\d{4}$",
+          "examples": ["1090", "UN1090", "NA1993"]
+        },
+        "properShippingName": {
+          "type": "string",
+          "description": "The Proper Shipping Name (PSN) exactly as listed in the Dangerous Goods List, without qualifiers (WASTE, HOT, EMPTY UNCLEANED etc. are supplied under 'qualifiers').",
+          "maxLength": 500
+        },
+        "technicalName": {
+          "type": "string",
+          "description": "Technical or chemical name, required for N.O.S. and generic entries; rendered in parentheses after the PSN.",
+          "maxLength": 500
+        },
+        "class": {
+          "type": "array",
+          "description": "Hazard class(es). Index 0 is the primary class/division; further entries are subsidiary hazards. Values are IMDG class strings, e.g. ['3'], ['4.1','5.1'], ['1.4','S'].",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^([1-9](\\.[0-9][A-S]?)?|S)$"
+          },
+          "examples": [["3"], ["8", "6.1"], ["1.4", "S"]]
+        },
+        "packingGroup": {
+          "type": ["string", "null"],
+          "enum": ["I", "II", "III", null],
+          "description": "Packing group, or null/absent where none is assigned."
+        },
+        "marks": {
+          "type": "string",
+          "description": "Shipping marks (box 14, first line).",
+          "maxLength": 500
+        },
+        "packaging": { "$ref": "#/$defs/packaging" },
+        "weights": { "$ref": "#/$defs/weights" },
+        "cubeM3": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Volume of the line in cubic metres (box 14, cube column)."
+        },
+        "marinePollutant": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether the goods are declared a marine pollutant. When true and required, 'marinePollutantChemicalName' identifies the pollutant."
+        },
+        "marinePollutantChemicalName": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "The component(s) that make the goods a marine pollutant, where the PSN does not itself identify them."
+        },
+        "flashpoint": { "$ref": "#/$defs/flashpoint" },
+        "temperatureControl": { "$ref": "#/$defs/temperatureControl" },
+        "emergencySchedule": { "$ref": "#/$defs/emergencySchedule" },
+        "segregationGroups": {
+          "type": "array",
+          "description": "IMDG segregation group codes declared for the substance (e.g. 'SGG1').",
+          "items": { "type": "string", "maxLength": 20 }
+        },
+        "qualifiers": { "$ref": "#/$defs/qualifiers" },
+        "radioactive": { "$ref": "#/$defs/radioactive" },
+        "fumigation": { "$ref": "#/$defs/fumigation" },
+        "carbonOfOrganicOrigin": { "$ref": "#/$defs/carbonOfOrganicOrigin" },
+        "fireworkClassificationCode": {
+          "type": "string",
+          "maxLength": 70,
+          "description": "Competent-authority firework classification reference, where required for Class 1 fireworks."
+        },
+        "endOfHoldingTime": {
+          "type": "string",
+          "format": "date",
+          "description": "End of holding time (e.g. UN 3538 and T75-controlled substances), ISO 8601 yyyy-mm-dd."
+        },
+        "competentAuthorityApproval": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Competent authority (DSIT) approval reference for packaging approvals, e.g. for self-reactive substances and organic peroxides. Rendered as 'Packaging approved by the competent authority of …'."
+        },
+        "packagingApprovalReference": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Item/packaging approval reference (rendered as 'Approval Ref: …')."
+        },
+        "specialProvisionNotes": {
+          "type": "array",
+          "description": "Special-provision statements required on the declaration, e.g. 'Transport in accordance with special provision 376'. Producers MAY supply the SP number and let the renderer expand it, or the full text.",
+          "items": { "type": "string", "maxLength": 300 }
+        },
+        "variantDescription": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "The Dangerous Goods List variant description for the entry, where the substance has multiple variants under one UN number."
+        },
+        "packingMethod": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Packing method / mixed-packing arrangement reference, where declared."
+        },
+        "permits": {
+          "type": "array",
+          "description": "Competent-authority approvals and permits applying to this line (packaging approvals, special arrangements, etc.).",
+          "items": { "$ref": "#/$defs/permit" }
+        },
+        "emergencyContact": {
+          "allOf": [{ "$ref": "#/$defs/contact" }],
+          "description": "Per-line 24-hour emergency contact, where different from the party-level contact."
+        },
+        "additionalInformation": {
+          "type": "string",
+          "maxLength": 2000,
+          "description": "Free-text additional information appended to this line's description."
+        },
+        "descriptionOverride": {
+          "type": "string",
+          "maxLength": 4000,
+          "description": "A fully pre-rendered goods description for box 14. When present, conforming renderers MUST use it verbatim instead of composing text from the structured fields. Use only when you already hold authoritative wording."
+        }
+      }
+    },
+
+    "packaging": {
+      "type": "object",
+      "description": "Number and kind of packages for the line.",
+      "additionalProperties": false,
+      "properties": {
+        "numberOfPackages": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of outer packages."
+        },
+        "kindOfPackages": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Plain description of the outer package kind, e.g. 'Steel drums'."
+        },
+        "outerPackagingCode": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "IMDG packaging code for the outer packaging, e.g. '1A1', '4G'."
+        },
+        "innerPackagingCode": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "IMDG packaging code for the inner packaging where relevant."
+        },
+        "numberOfInnerPackages": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of inner packages, where declared."
+        },
+        "intermediatePackagingCode": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "IMDG packaging code for an intermediate packaging, where present."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["package", "ibc", "largePackaging", "tank", "bulk", "pressureReceptacle", "other"],
+          "description": "The kind of packaging arrangement, where it is not an ordinary package (IBC, large packaging, tank, bulk, pressure receptacle)."
+        }
+      }
+    },
+
+    "weights": {
+      "type": "object",
+      "description": "Mass and capacity figures for the line. All masses in kilograms, capacity in litres.",
+      "additionalProperties": false,
+      "properties": {
+        "grossMassKg": { "type": "number", "minimum": 0, "description": "Gross mass of the line (box 14, gross mass column)." },
+        "netMassKg": { "type": "number", "minimum": 0, "description": "Net mass of the dangerous substance (box 14, net mass column)." },
+        "netExplosiveContentKg": { "type": "number", "minimum": 0, "description": "Net explosive content (NEC), required for Class 1." },
+        "capacityLitres": { "type": "number", "minimum": 0, "description": "Total capacity in litres, an alternative to net mass for liquids/gases." },
+        "actualDangerousGoodsMassKg": { "type": "number", "minimum": 0, "description": "Actual mass of dangerous goods, where different from net mass." }
+      }
+    },
+
+    "flashpoint": {
+      "type": "object",
+      "description": "Flashpoint of the substance, required for flammable liquids.",
+      "required": ["valueCelsius"],
+      "additionalProperties": false,
+      "properties": {
+        "valueCelsius": { "type": "number", "description": "Flashpoint in degrees Celsius." },
+        "cup": {
+          "type": "string",
+          "enum": ["closed", "open"],
+          "default": "closed",
+          "description": "Cup method: rendered as 'c.c.' (closed cup) or 'o.c.' (open cup)."
+        }
+      }
+    },
+
+    "temperatureControl": {
+      "type": "object",
+      "description": "Control and emergency temperatures for self-reactive substances and organic peroxides.",
+      "additionalProperties": false,
+      "properties": {
+        "controlTemperatureCelsius": { "type": "number" },
+        "emergencyTemperatureCelsius": { "type": "number" }
+      }
+    },
+
+    "emergencySchedule": {
+      "type": "object",
+      "description": "IMDG EmS (Emergency Schedule) fire and spillage codes.",
+      "additionalProperties": false,
+      "properties": {
+        "fire": { "type": "string", "pattern": "^F-[A-Z]$", "examples": ["F-E"] },
+        "spillage": { "type": "string", "pattern": "^S-[A-Z]$", "examples": ["S-D"] }
+      }
+    },
+
+    "permit": {
+      "type": "object",
+      "description": "A competent-authority approval or permit reference.",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "type": "string", "maxLength": 100, "description": "Kind of approval, e.g. 'competent-authority', 'packaging-approval', 'special-arrangement'." },
+        "value": { "type": "string", "maxLength": 200, "description": "The approval/permit reference or identifier." }
+      }
+    },
+
+    "ctuTemperatureControl": {
+      "type": "object",
+      "description": "Temperature control applied to the whole CTU (e.g. a reefer).",
+      "additionalProperties": false,
+      "properties": {
+        "controlTemperatureCelsius": { "type": "number", "description": "Set/control temperature of the unit." },
+        "operational": { "type": "boolean", "description": "Whether the unit's temperature control is operational in transit." }
+      }
+    },
+
+    "qualifiers": {
+      "type": "object",
+      "description": "Declaration qualifiers that modify how the goods are described (rendered as prefixes/suffixes around the PSN and class per the rendering algorithm). All default to false.",
+      "additionalProperties": false,
+      "properties": {
+        "isWaste": { "type": "boolean", "default": false },
+        "isHot": { "type": "boolean", "default": false },
+        "isSample": { "type": "boolean", "default": false },
+        "isStabilized": { "type": "boolean", "default": false },
+        "isMolten": { "type": "boolean", "default": false },
+        "isSolution": { "type": "boolean", "default": false },
+        "isMixture": { "type": "boolean", "default": false },
+        "isEmptyUncleaned": { "type": "boolean", "default": false },
+        "isSalvagePackage": { "type": "boolean", "default": false },
+        "isSalvagePressureReceptacle": { "type": "boolean", "default": false },
+        "isLimitedQuantity": { "type": "boolean", "default": false },
+        "isExceptedQuantity": { "type": "boolean", "default": false },
+        "isReportableQuantity": { "type": "boolean", "default": false, "description": "US RQ (reportable quantity), rendered 'RQ'." },
+        "isCoolant": { "type": "boolean", "default": false },
+        "isConditioner": { "type": "boolean", "default": false },
+        "isFoodstuffs": { "type": "boolean", "default": false, "description": "Goods are foodstuffs/feed, for segregation-away-from purposes." },
+        "isWettedOrDesensitized": { "type": "boolean", "default": false, "description": "Explosive or Class 4 substance carried wetted or desensitized." },
+        "isStabilizedNotByTemperatureControl": { "type": "boolean", "default": false, "description": "Substance is chemically stabilized rather than temperature-controlled; affects whether control/emergency temperatures apply." }
+      }
+    },
+
+    "radioactive": {
+      "type": "object",
+      "description": "Radioactive material details (Class 7), per IMDG Code 5.4.1.5.7. All fields are optional at the schema level; which apply depends on the substance and package.",
+      "additionalProperties": false,
+      "properties": {
+        "radionuclide": { "type": "string", "maxLength": 200, "description": "Name or symbol of each radionuclide (the radioactive technical name)." },
+        "description": { "type": "string", "maxLength": 500, "description": "Description of the physical and chemical form of the material, or a statement that it is special form or low dispersible material." },
+        "physicalChemicalForm": { "type": "string", "maxLength": 200, "description": "Physical and chemical form, where declared separately from 'description'." },
+        "activity": { "type": "string", "maxLength": 100, "description": "Activity (or, for fissile material, mass of fissile nuclides) with unit, e.g. '3.7 GBq'." },
+        "category": {
+          "type": "string",
+          "enum": ["I-WHITE", "II-YELLOW", "III-YELLOW"],
+          "description": "Package/overpack category."
+        },
+        "transportIndex": { "type": "number", "minimum": 0, "description": "Transport Index (TI)." },
+        "criticalitySafetyIndex": { "type": "number", "minimum": 0, "description": "Criticality Safety Index (CSI), for fissile material." },
+        "isFissile": { "type": "boolean", "default": false, "description": "Whether the material is fissile." },
+        "isFissileExcepted": { "type": "boolean", "default": false, "description": "Whether the material is fissile-excepted under 2.7.2.3.5." },
+        "specialForm": { "type": "boolean", "default": false, "description": "Whether the material is special-form radioactive material." },
+        "lowDispersible": { "type": "boolean", "default": false, "description": "Whether the material is low dispersible radioactive material." },
+        "packageType": {
+          "type": "string",
+          "enum": ["excepted", "IP-1", "IP-2", "IP-3", "A", "B(U)", "B(M)", "C"],
+          "description": "Package type/identification (excepted, industrial IP-1/2/3, Type A, B(U), B(M) or C)."
+        },
+        "overpack": { "type": "boolean", "default": false, "description": "Whether the material is carried in an overpack." },
+        "competentAuthorityReferences": {
+          "type": "array",
+          "description": "Identification mark(s) for each competent-authority approval certificate (design, special form, special arrangement, shipment) applicable to the consignment.",
+          "items": { "type": "string", "maxLength": 100 }
+        }
+      }
+    },
+
+    "fumigation": {
+      "type": "object",
+      "description": "Fumigated cargo transport unit details (UN 3359).",
+      "additionalProperties": false,
+      "properties": {
+        "fumigantName": { "type": "string", "maxLength": 200 },
+        "fumigationDateTime": { "type": "string", "format": "date-time", "description": "Date and time of fumigation (ISO 8601)." },
+        "dosage": { "type": "string", "maxLength": 100 }
+      }
+    },
+
+    "carbonOfOrganicOrigin": {
+      "type": "object",
+      "description": "Declaration details for carbon of organic origin (e.g. UN 1361 / 3088 self-heating).",
+      "additionalProperties": false,
+      "properties": {
+        "dateOfProduction": { "type": "string", "format": "date" },
+        "dateOfPacking": { "type": "string", "format": "date" },
+        "temperatureOnDateOfPackingCelsius": { "type": "number" }
+      }
+    },
+
+    "nonDangerousGoodsItem": {
+      "type": "object",
+      "description": "A non-dangerous goods line carried in the same CTU.",
+      "required": ["description"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string", "maxLength": 2000 },
+        "grossMassKg": { "type": "number", "minimum": 0 },
+        "netMassKg": { "type": "number", "minimum": 0 },
+        "cubeM3": { "type": "number", "minimum": 0 }
+      }
+    },
+
+    "certificates": {
+      "type": "object",
+      "description": "The signatory blocks of the form (boxes 20–22 plus the haulier block).",
+      "additionalProperties": false,
+      "properties": {
+        "shipperDeclaration": {
+          "allOf": [{ "$ref": "#/$defs/signatureBlock" }],
+          "description": "Box 22 — the shipper/consignor declaration. The declarant certifies the goods are fully and accurately described, classified, packed, marked, labelled and in proper condition for carriage."
+        },
+        "containerPackingCertificate": {
+          "allOf": [{ "$ref": "#/$defs/signatureBlock" }],
+          "description": "Box 20 — the container/vehicle packing certificate, signed by the party responsible for packing the CTU."
+        },
+        "receivingOrganisationReceipt": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Box 21 — receiving organisation receipt and remarks.",
+          "properties": {
+            "remarks": { "type": "string", "maxLength": 1000 },
+            "signature": { "type": "string", "maxLength": 200 }
+          }
+        },
+        "haulier": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Haulier block — the party moving the CTU out of the depot.",
+          "properties": {
+            "name": { "type": "string", "maxLength": 200 },
+            "vehicleRegistration": { "type": "string", "maxLength": 50 },
+            "signatureAndDate": { "type": "string", "maxLength": 200 },
+            "driversSignature": { "type": "string", "maxLength": 200 }
+          }
+        }
+      }
+    },
+
+    "signatureBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "companyName": { "type": "string", "maxLength": 200 },
+        "declarantName": { "type": "string", "maxLength": 200, "description": "Name/status of the declarant." },
+        "placeAndDate": { "type": "string", "maxLength": 200 },
+        "signature": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Declarant signature. For EDI/print transmission this SHOULD be upper case."
+        }
+      }
+    }
+  }
+}

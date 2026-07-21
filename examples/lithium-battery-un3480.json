@@ -1,0 +1,83 @@
+{
+  "openDgdVersion": "0.1",
+  "documentType": "IMO_MULTIMODAL_DANGEROUS_GOODS_FORM",
+  "documentReference": "DGD-EXAMPLE-0002",
+  "issueDate": "2026-07-21",
+  "regulation": {
+    "code": "IMDG",
+    "edition": "42-24"
+  },
+  "consignment": {
+    "parties": {
+      "shipper": {
+        "name": "Example Cells GmbH",
+        "address": "Example Strasse 5, Hamburg, Germany"
+      },
+      "consignee": {
+        "name": "Example Assembly Co",
+        "address": "1 Example Blvd, Charleston, SC, USA"
+      },
+      "carrier": {
+        "name": "Example Ocean Line"
+      }
+    },
+    "references": {
+      "transportDocumentNumber": "BOL-EXAMPLE-0002"
+    },
+    "transport": {
+      "modeOfTransport": "sea",
+      "shipType": "cargo",
+      "vessel": "MV SAMPLE",
+      "voyageNumber": "S001",
+      "sailingDate": "2026-08-02",
+      "portOfLoading": "Hamburg",
+      "portOfDischarge": "Charleston",
+      "destination": "Charleston"
+    },
+    "cargoTransportUnit": {
+      "unitType": "container",
+      "identificationNumber": "EXLU 000000-0",
+      "sealNumbers": "SEAL-0002",
+      "sizeType": "20' GP",
+      "tareMassKg": 2200,
+      "totalGrossMassKg": 8700
+    },
+    "dangerousGoods": [
+      {
+        "lineReference": "L1",
+        "unNumber": "3480",
+        "properShippingName": "LITHIUM ION BATTERIES",
+        "class": [
+          "9"
+        ],
+        "marks": "EXAMPLE PALLET 01",
+        "packaging": {
+          "numberOfPackages": 12,
+          "kindOfPackages": "Fibreboard boxes",
+          "outerPackagingCode": "4G"
+        },
+        "weights": {
+          "grossMassKg": 6500,
+          "netMassKg": 5400
+        },
+        "cubeM3": 18.5,
+        "emergencySchedule": {
+          "fire": "F-A",
+          "spillage": "S-I"
+        },
+        "specialProvisionNotes": [
+          "376"
+        ],
+        "additionalInformation": "State of charge not exceeding 30% of rated capacity."
+      }
+    ],
+    "certificates": {
+      "shipperDeclaration": {
+        "companyName": "Example Cells GmbH",
+        "declarantName": "C. Example, DG Safety Adviser",
+        "placeAndDate": "Hamburg, 2026-07-21",
+        "signature": "C EXAMPLE"
+      }
+    }
+  }
+}
