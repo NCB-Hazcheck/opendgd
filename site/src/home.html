@@ -1,6 +1,6 @@
 <section class="hero">
     <div class="wrap hero-inner">
-      <p class="eyebrow"><span class="dot">◆</span> An open standard from NCB Hazcheck &nbsp;·&nbsp; IMDG Code</p>
+      <p class="eyebrow"><span class="dot">◆</span> An open standard from NCB Hazcheck</p>
       <h1>One open format for <em>Dangerous&nbsp;Goods Declarations</em>.</h1>
       <p class="lede">OpenDGD is a free, open standard for the data behind an IMDG dangerous goods declaration. Create the DGD once, and every system in the chain can read it, check it and print the same form.</p>
       <div class="cta-row">
@@ -13,13 +13,17 @@
         <div class="thesis-grid">
           <div class="in">
             <span class="flow-label">Structured data in</span>
-<pre class="code"><span class="k">"unNumber"</span>: <span class="s">"1090"</span>,
-<span class="k">"properShippingName"</span>: <span class="s">"ACETONE"</span>,
-<span class="k">"class"</span>: [<span class="s">"3"</span>],
-<span class="k">"packingGroup"</span>: <span class="s">"II"</span>,
-<span class="k">"flashpoint"</span>: { <span class="k">"valueCelsius"</span>: <span class="s">-17</span> },
-<span class="k">"packaging"</span>: { <span class="k">"numberOfPackages"</span>: <span class="s">10</span>,
-  <span class="k">"kindOfPackages"</span>: <span class="s">"Steel drums"</span> }</pre>
+<pre class="code">{
+  <span class="k">"unNumber"</span>: <span class="s">"1090"</span>,
+  <span class="k">"properShippingName"</span>: <span class="s">"ACETONE"</span>,
+  <span class="k">"class"</span>: [<span class="s">"3"</span>],
+  <span class="k">"packingGroup"</span>: <span class="s">"II"</span>,
+  <span class="k">"flashpoint"</span>: { <span class="k">"valueCelsius"</span>: <span class="s">-17</span> },
+  <span class="k">"packaging"</span>: {
+    <span class="k">"numberOfPackages"</span>: <span class="s">10</span>,
+    <span class="k">"kindOfPackages"</span>: <span class="s">"Steel drums"</span>
+  }
+}</pre>
           </div>
           <div class="out">
             <span class="flow-label">The same text out, on any system</span>
@@ -188,6 +192,6 @@
         <a class="btn btn-primary" href="/spec/">Read the spec <span class="arw">→</span></a>
         <a class="btn btn-ghost" href="/playground/">Try the playground</a>
       </div>
-      <p class="foot-note">OpenDGD, an open standard from NCB Hazcheck. The IMDG Code governs.</p>
+      <p class="foot-note">OpenDGD, an open standard from NCB Hazcheck.</p>
     </div>
   </section>
