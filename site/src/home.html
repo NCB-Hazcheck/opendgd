@@ -1,0 +1,209 @@
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="hero-badge">
+        <span class="diamond" aria-hidden="true">◆</span>
+        <span class="t">Free, open standard · v1.0</span>
+      </div>
+      <h1>One open format for Dangerous Goods Declarations.</h1>
+      <p class="lede">Free and openly licensed. Create the DGD once — every system in the chain reads it, checks it and prints the same IMO form.</p>
+      <p class="sub">Machine-readable data catches what free text hides — misdeclared and undeclared cargo — and hands your team back the hours it spends re-keying and cross-checking.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="/spec/">Read the spec <span class="arw">→</span></a>
+        <a class="btn btn-ghost" href="/playground/">Try the playground</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="v">IMDG 42-24</div><div class="l">Latest amendment</div></div>
+        <div><div class="v">Boxes 1–22</div><div class="l">Full IMO form</div></div>
+        <div><div class="v">CC BY 4.0 · Apache 2.0</div><div class="l">Spec and code licences</div></div>
+      </div>
+    </div>
+
+    <div class="codecard">
+      <div class="codecard-head">
+        <span class="codecard-label">Structured data in</span>
+        <button type="button" class="copy" data-copy-pre>Copy</button>
+      </div>
+      <pre>{
+  "unNumber": "1090",
+  "properShippingName": "ACETONE",
+  "class": ["3"],
+  "packingGroup": "II",
+  "flashpoint": { "valueCelsius": -17 },
+  "packaging": { "numberOfPackages": 10,
+                 "kindOfPackages": "Steel drums" }
+}</pre>
+      <div class="out">
+        <span class="codecard-label">Box 14 out, on any system</span>
+        <p>UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drum.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE PROBLEM -->
+<section class="band flush"><div class="wrap">
+  <div class="sec-head">
+    <p class="eyebrow">The problem</p>
+    <h2>The form is standard. The data behind it is not.</h2>
+  </div>
+  <div class="card-grid-3">
+    <div class="card lift"><span class="tag">Re-keying</span><h3>Typed in again at every handover</h3><p>The same declaration gets re-entered at each step. Every re-key is another chance for an error on cargo that cannot afford one.</p></div>
+    <div class="card lift"><span class="tag">Mismatch</span><h3>Descriptions that don't agree</h3><p>No two systems build box 14 the same way, so one line of goods reads differently on the shipper's copy, the forwarder's and the carrier's.</p></div>
+    <div class="card lift"><span class="tag">Opacity</span><h3>Nothing to check by machine</h3><p>With no structured data underneath, a declaration cannot be validated automatically against the IMDG Code. Someone has to read it by eye.</p></div>
+  </div>
+</div></section>
+
+<!-- SAME INPUT, SAME OUTPUT -->
+<section class="band"><div class="wrap">
+  <div class="diff-head">
+    <div class="t">
+      <p class="eyebrow">Same input, same output</p>
+      <h2>One consignment, three systems, one description.</h2>
+      <p>UN 1090 ACETONE, as box 14 reads on the shipper's copy, the forwarder's and the carrier's.</p>
+    </div>
+    <div class="segmented" id="diff-tabs">
+      <button type="button" data-diff="today" aria-pressed="true">Free text today</button>
+      <button type="button" data-diff="opendgd" aria-pressed="false">With OpenDGD</button>
+    </div>
+  </div>
+  <div class="diff-grid" id="diff-grid"><!-- rendered by home.js; default below for no-JS -->
+    <div class="diff-card bad"><div class="row1"><span class="sys">Shipper's ERP</span><span class="flag no">Differs</span></div><p class="txt">1090 Acetone cl.3 PGII FP -17 10 drums</p><p class="note">Free text, typed by hand. No EmS, packaging code dropped.</p></div>
+    <div class="diff-card bad"><div class="row1"><span class="sys">Forwarder's portal</span><span class="flag no">Differs</span></div><p class="txt">UN1090 ACETONE 3 / II / 10 x 1A1 / FP -17C</p><p class="note">Different order, different separators, no EmS.</p></div>
+    <div class="diff-card bad"><div class="row1"><span class="sys">Carrier's booking</span><span class="flag no">Differs</span></div><p class="txt">ACETONE UN 1090 CLASS 3 PGII EmS F-E S-D</p><p class="note">Flashpoint and packaging missing entirely.</p></div>
+  </div>
+  <p class="diff-summary" id="diff-summary">Three readings of one consignment. Someone has to reconcile them by eye, and a dropped flashpoint or EmS is how an undeclared hazard gets aboard.</p>
+</div></section>
+
+<!-- WHAT OPENDGD IS -->
+<section class="band alt"><div class="wrap">
+  <div class="sec-head">
+    <p class="eyebrow">What OpenDGD is</p>
+    <h2>A shared data format, and one way to render it.</h2>
+  </div>
+  <div class="card-grid-3">
+    <div class="card part"><div class="part-top"><span class="num">01</span><span class="kind">JSON Schema</span></div><h3>The data model</h3><p>A JSON Schema for a complete IMDG declaration. Every field maps to a numbered box on the IMO form.</p><a class="file" href="/opendgd.schema.json">opendgd.schema.json</a></div>
+    <div class="card part"><div class="part-top"><span class="num">02</span><span class="kind">Algorithm</span></div><h3>Canonical rendering</h3><p>A published algorithm for building box 14, so every implementation produces the same goods description from the same data.</p><a class="file" href="/spec/rendering/">rendering.md</a></div>
+    <div class="card part"><div class="part-top"><span class="num">03</span><span class="kind">The form</span></div><h3>One document out</h3><p>The completed IMO form is the end product. Template and algorithm are part of the standard, so the same declaration gives the same DOCX and PDF everywhere.</p><a class="file" href="/api/">openapi.yaml</a></div>
+  </div>
+</div></section>
+
+<!-- HOW IT WORKS -->
+<section class="band"><div class="wrap">
+  <p class="eyebrow muted">How it works</p>
+  <h2 style="margin-top:12px">Describe it once. Check it. Get the form.</h2>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><h3>Describe the consignment</h3><p>Parties, transport, container and each dangerous goods line as OpenDGD JSON, or build it in the playground.</p></div>
+    <div class="step"><div class="num">2</div><h3>Check conformance</h3><p>Check it conforms to the standard for free, then validate against the full IMDG Code with a validator such as Hazcheck Validate.</p></div>
+    <div class="step"><div class="num">3</div><h3>Get the form</h3><p>A completed IMO Multimodal Dangerous Goods Form as DOCX or PDF, the same document on every implementation.</p></div>
+  </div>
+</div></section>
+
+<!-- WHY IT'S CREDIBLE -->
+<section class="navyband"><div class="wrap">
+  <div class="cred">
+    <div class="lbl"><span class="diamond" aria-hidden="true">◆</span><span class="t">Why it's credible</span></div>
+    <div>
+      <h2>Built by people who classify dangerous goods for a living.</h2>
+      <p>OpenDGD comes from <strong>NCB Hazcheck</strong>. The National Cargo Bureau has worked on the safe carriage of cargo at sea since 1952, and Hazcheck builds the IMDG classification and validation software used across the industry. We took a production declaration engine and opened up the format behind it.</p>
+      <div class="stat-row">
+        <div class="stat"><div class="v">Since 1952</div><div class="l">NCB at sea</div></div>
+        <div class="stat"><div class="v">Boxes 1–22</div><div class="l">Full IMO form</div></div>
+        <div class="stat"><div class="v">IMDG 42-24</div><div class="l">Latest amendment</div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- THE STANDARD, ON PAPER -->
+<section class="band flush"><div class="wrap">
+  <div class="manifest-meta">
+    <span class="eyebrow muted">In the repository</span>
+    <span class="r">opendgd / v1.0 · CC BY 4.0 spec · Apache 2.0 code</span>
+  </div>
+  <h2 style="margin:0 0 30px">The standard, on paper.</h2>
+  <div class="manifest">
+    <div class="frow"><span class="path"><span class="dir">spec/</span>opendgd.schema.json</span><span class="desc">The standard: a complete IMDG declaration as JSON Schema 2020-12.</span><span class="tag">validates</span></div>
+    <div class="frow"><span class="path"><span class="dir">spec/</span>rendering.md</span><span class="desc">Canonical box 14 rendering algorithm, 35 ordered segments.</span><span class="tag">normative</span></div>
+    <div class="frow"><span class="path"><span class="dir">spec/form/</span>opendgd-dgd-template.docx</span><span class="desc">The IMO form template. The rendered document is part of the standard.</span><span class="tag">normative</span></div>
+    <div class="frow"><span class="path"><span class="dir">spec/</span>openapi.yaml</span><span class="desc">Reference API: schema, conformance, docx, pdf.</span><span class="tag">parses</span></div>
+    <div class="frow"><span class="path"><span class="dir">tools/</span>render-dgd</span><span class="desc">Render library, CLI and service: fills the form, returns DOCX and PDF.</span><span class="tag">apache-2.0</span></div>
+    <div class="frow"><span class="path">Dockerfile · <span class="dir">deploy/</span></span><span class="desc">Container image and Kubernetes manifests for the render service.</span><span class="tag">deploy</span></div>
+    <div class="frow"><span class="path"><span class="dir">examples/</span>acetone-un1090.json</span><span class="desc">A flammable-liquid declaration, the worked example above.</span><span class="tag">validates</span></div>
+    <div class="frow"><span class="path"><span class="dir">examples/</span>lithium-battery-un3480.json</span><span class="desc">A Class 9 line that exercises the special-provision path.</span><span class="tag">validates</span></div>
+    <div class="frow"><span class="path"><span class="dir">examples/</span>radioactive-un2915.json</span><span class="desc">A Class 7 line with radionuclide, activity, category and transport index.</span><span class="tag">validates</span></div>
+    <div class="frow"><span class="path">GOVERNANCE · LICENSE · CONTRIBUTING</span><span class="desc">Stewardship, the dual licence, and how to propose changes.</span><span class="tag">meta</span></div>
+  </div>
+</div></section>
+
+<!-- OPEN & FREE + IMPLEMENTATIONS -->
+<section class="band alt"><div class="wrap">
+  <div class="split">
+    <div>
+      <p class="eyebrow muted">Open and free</p>
+      <h2 style="margin-top:12px">Open format. Competitive validation.</h2>
+    </div>
+    <div class="ticks">
+      <div class="tick"><h3>Openly licensed</h3><p>CC BY 4.0 for the spec, Apache 2.0 for the code. Use it for anything, including commercial products.</p></div>
+      <div class="tick"><h3>No lock-in</h3><p>The core API needs no engine and no account. Host your own or use the reference service.</p></div>
+      <div class="tick"><h3>Public process</h3><p>Proposals and changes happen in the open, with a route to neutral governance as adoption grows.</p></div>
+    </div>
+  </div>
+
+  <div class="impl-block">
+    <div class="impl-head">
+      <div>
+        <p class="eyebrow muted">Implementations</p>
+        <h2 style="margin-top:12px;max-width:560px">Anyone can build one.</h2>
+      </div>
+      <div class="segmented" id="tier-tabs" style="background:var(--card)">
+        <button type="button" data-tier="core" aria-pressed="true">Open core</button>
+        <button type="button" data-tier="extended" aria-pressed="false">Extended · validators</button>
+      </div>
+    </div>
+
+    <div data-tier-panel="core">
+      <div class="impl-grid">
+        <div class="impl-card">
+          <div class="ic-head"><h3>OpenDGD reference</h3><span class="url">api.opendgd.org</span></div>
+          <p>The open core service: schema, conformance, DOCX and PDF. No account, no engine.</p>
+          <span class="pill-tag">Core · open</span>
+        </div>
+        <div class="impl-card dashed">
+          <h3 style="margin:0 0 8px">Your implementation here</h3>
+          <p>Built something that reads or writes OpenDGD? <a href="https://github.com/NCB-Hazcheck/opendgd" target="_blank" rel="noopener">Open a pull request</a> to be listed.</p>
+        </div>
+      </div>
+    </div>
+
+    <div data-tier-panel="extended" hidden>
+      <div class="validate-card">
+        <div class="vh"><h3>Hazcheck Validate</h3><span class="tier">Extended tier · NCB Hazcheck</span></div>
+        <p class="vlede">The open core gives you a well-formed declaration. A full validator takes it from correctly described to demonstrably compliant — and returns a validated, QR-stamped PDF.</p>
+        <div class="vbens">
+          <div class="vben"><h4>Search, don't type</h4><p>Look up any entry by UN number; proper shipping name, hazard class and packing group fill themselves in.</p></div>
+          <div class="vben"><h4>Packaging confirmed</h4><p>Checks that inner and outer packaging on each line is permitted for the substance under the IMDG Code, not just plausible.</p></div>
+          <div class="vben"><h4>Loads checked end to end</h4><p>Validates the whole consignment for segregation and stowage conflicts before it sails, across every line in the unit.</p></div>
+        </div>
+      </div>
+      <p class="impl-foot">Backed by NCB Hazcheck's dangerous goods experts. <a href="https://hazcheck.com" target="_blank" rel="noopener">hazcheck.com ↗</a></p>
+    </div>
+  </div>
+
+  <div class="sponsor">
+    <div class="st"><strong>Building on OpenDGD, or want to back it?</strong> List a conforming implementation, or sponsor the standard and support its neutral governance.</div>
+    <a class="btn btn-accent" href="mailto:hello@opendgd.org?subject=OpenDGD%20implementation%20or%20sponsorship">Get listed or sponsor <span class="arw">→</span></a>
+  </div>
+</div></section>
+
+<!-- FINAL CTA -->
+<section class="final"><div class="wrap">
+  <p class="eyebrow muted" style="justify-content:center">Get involved</p>
+  <h2>Help set the standard for dangerous goods declarations.</h2>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="/spec/">Read the spec <span class="arw">→</span></a>
+    <a class="btn btn-ghost" href="/playground/">Try the playground</a>
+  </div>
+  <p class="foot-note">OpenDGD, an open standard from NCB Hazcheck.</p>
+</div></section>

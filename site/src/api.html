@@ -1,0 +1,44 @@
+<div class="api-page">
+  <p class="doc-eyebrow">Reference API</p>
+  <h1>The OpenDGD API</h1>
+  <p class="lede">Check conformance and render declarations to the IMO form. The open core needs no substance data, no engine and no account. Generated from <a href="/openapi.yaml">openapi.yaml</a>.</p>
+
+  <div class="api-list">
+    <div class="api-ep">
+      <div class="method">GET</div>
+      <div class="body">
+        <div class="path">/v1/schema</div>
+        <p class="desc">Fetch the OpenDGD JSON Schema for the version served by this deployment.</p>
+        <div class="chips"><span>no body</span><span>application/schema+json</span></div>
+      </div>
+    </div>
+    <div class="api-ep">
+      <div class="method">POST</div>
+      <div class="body">
+        <div class="path">/v1/declarations/conformance</div>
+        <p class="desc">Structural conformance check. Returns <code style="font-family:var(--mono);font-size:12px">conforms</code> plus findings, each with a JSON Pointer to the offending field.</p>
+        <div class="chips"><span>OpenDGD JSON</span><span>application/json</span></div>
+      </div>
+    </div>
+    <div class="api-ep">
+      <div class="method">POST</div>
+      <div class="body">
+        <div class="path">/v1/declarations/docx</div>
+        <p class="desc">Fills the IMO form template with the mapped fields, box 14 composed per §4 of the spec.</p>
+        <div class="chips"><span>OpenDGD JSON</span><span>docx</span></div>
+      </div>
+    </div>
+    <div class="api-ep">
+      <div class="method">POST</div>
+      <div class="body">
+        <div class="path">/v1/declarations/pdf</div>
+        <p class="desc">The same document as PDF, produced from the DOCX. Byte-consistent across conforming implementations.</p>
+        <div class="chips"><span>OpenDGD JSON</span><span>application/pdf</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:22px;max-width:640px">Conformance is a structural check against the OpenDGD schema. It is <em>not</em> a regulatory check of whether the goods are safe to ship — that is a validator's job, such as Hazcheck Validate.</div>
+
+  <p style="margin-top:26px;font-size:14px;color:var(--ink-3)">Prefer the raw contract? Read the full <a href="/openapi.yaml">OpenAPI description</a>.</p>
+</div>
