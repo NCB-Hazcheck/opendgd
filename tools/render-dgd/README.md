@@ -1,6 +1,6 @@
 # @opendgd/render
 
-Render an OpenDGD document to the **IMO Multimodal Dangerous Goods Form**, as a
+Render an OpenDGD document to the **IMDG Multimodal Dangerous Goods Form**, as a
 DOCX or a PDF. The form template lives in [`spec/form/`](../../spec/form/) and the
 box-14 goods description is composed by the canonical algorithm in
 [`spec/rendering.md`](../../spec/rendering.md). Both are part of the standard, so
@@ -39,8 +39,8 @@ npm start        # listens on :8080
 | Method + path | Returns |
 |---|---|
 | `POST /v1/declarations/conformance` | `{ conforms, findings }` — does it conform to the standard? |
-| `POST /v1/declarations/docx` | the IMO form as `.docx` |
-| `POST /v1/declarations/pdf` | the IMO form as `.pdf` |
+| `POST /v1/declarations/docx` | the IMDG form as `.docx` |
+| `POST /v1/declarations/pdf` | the IMDG form as `.pdf` |
 | `GET /v1/schema` | the JSON Schema |
 | `GET /healthz` | liveness |
 

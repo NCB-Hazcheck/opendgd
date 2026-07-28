@@ -5,7 +5,7 @@
 **One open format for Dangerous Goods Declarations.**
 
 An open, machine-readable standard for creating a Dangerous Goods Declaration (DGD)
-under the IMDG Code, the data behind the IMO Multimodal Dangerous Goods Form.
+under the IMDG Code, the data behind the IMDG Multimodal Dangerous Goods Form.
 
 Published by **NCB Hazcheck**, a National Cargo Bureau company.
 
@@ -19,7 +19,7 @@ Published by **NCB Hazcheck**, a National Cargo Bureau company.
 
 ## The problem
 
-The IMO Multimodal Dangerous Goods Form is standardised. The **data behind it is not**. Every shipper,
+The IMDG Multimodal Dangerous Goods Form is standardised. The **data behind it is not**. Every shipper,
 forwarder, carrier and terminal holds the same declaration in a different shape, and box 14, the
 safety-critical goods description, is free text composed differently by every system. That means
 re-keying, transcription errors, and declarations that can't be checked automatically.
@@ -31,7 +31,7 @@ re-keying, transcription errors, and declarations that can't be checked automati
 - **A canonical rendering algorithm** ([`spec/rendering.md`](spec/rendering.md)) so every implementation
   composes an identical box-14 goods description from that data.
 - **The form itself** ([`spec/form/`](spec/form/)). The end product of the standard is the completed
-  IMO Multimodal Dangerous Goods Form. The template plus the rendering algorithm define the output, so
+  IMDG Multimodal Dangerous Goods Form. The template plus the rendering algorithm define the output, so
   the same declaration produces the **same DOCX and the same PDF** on every implementation.
 - **A render library and service** ([`tools/render-dgd`](tools/render-dgd)) that fills the form and
   returns the DOCX/PDF, usable as a library in your own systems or as an endpoint you call.
@@ -42,7 +42,7 @@ sea since 1952. v1.0 is the settled, stable release any vendor, carrier or autho
 
 ## What it is not
 
-OpenDGD does not replace the IMDG Code or the IMO form, and it is not itself a compliance guarantee.
+OpenDGD does not replace the IMDG Code or the IMDG form, and it is not itself a compliance guarantee.
 A **conforming document** is well-formed; whether the goods are *correctly classified and safe to ship*
 is the job of a **validator** (e.g. Hazcheck Validate). The standard is open; validation depth is where
 implementations compete.
@@ -61,7 +61,7 @@ opendgd/
 │  ├─ opendgd.schema.json       the standard (JSON Schema 2020-12)
 │  ├─ rendering.md              canonical box-14 rendering algorithm
 │  ├─ openapi.yaml              reference API
-│  └─ form/                     the IMO form template (part of the standard)
+│  └─ form/                     the IMDG form template (part of the standard)
 ├─ examples/                    worked, schema-valid declarations
 ├─ tools/render-dgd/            render library + CLI + service (fills the form)
 ├─ deploy/                      Kubernetes manifests for the render service
@@ -73,7 +73,7 @@ opendgd/
 
 `site/` builds [opendgd.org](https://opendgd.org): a marketing landing page, the specification, user
 guide and rendering algorithm rendered from the Markdown in `spec/`, an interactive API reference, and a
-**playground** that builds a full IMO Multimodal Dangerous Goods Form live in the browser and emits a
+**playground** that builds a full IMDG Multimodal Dangerous Goods Form live in the browser and emits a
 valid OpenDGD document. The print-ready DOCX/PDF comes from the render service (`tools/render-dgd`). It
 is a small dependency-light static generator (one dev dependency), output is plain HTML/CSS/JS.
 
@@ -93,7 +93,7 @@ together.
 ```jsonc
 {
   "openDgdVersion": "1.0",
-  "documentType": "IMO_MULTIMODAL_DANGEROUS_GOODS_FORM",
+  "documentType": "IMDG_MULTIMODAL_DANGEROUS_GOODS_FORM",
   "regulation": { "code": "IMDG", "edition": "42-24" },
   "consignment": {
     "parties": { "shipper": { "name": "Example Shipper Ltd" } },

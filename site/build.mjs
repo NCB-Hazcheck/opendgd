@@ -360,7 +360,7 @@ write('index.html', page({
 // playground (full document builder)
 write('playground/index.html', page({
   title: 'OpenDGD Playground: build a dangerous goods declaration',
-  description: 'Build a full IMDG dangerous goods declaration in your browser and export the IMO form as a PDF.',
+  description: 'Build a full IMDG dangerous goods declaration in your browser and export the IMDG form as a PDF.',
   active: 'playground',
   body: read(path.join(SRC, 'playground.html')),
   bodyEnd: `<script src="/assets/playground.js" defer></script>`,

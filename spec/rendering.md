@@ -1,8 +1,8 @@
 # OpenDGD, Canonical Box-14 Rendering Algorithm
 
-**Status:** Released, v1.0 · **Applies to:** `documentType = IMO_MULTIMODAL_DANGEROUS_GOODS_FORM`, `regulation.code = IMDG`
+**Status:** Released, v1.0 · **Applies to:** `documentType = IMDG_MULTIMODAL_DANGEROUS_GOODS_FORM`, `regulation.code = IMDG`
 
-The value of a shared *data* format is that everyone renders the same *text*. Box 14 of the IMO
+The value of a shared *data* format is that everyone renders the same *text*. Box 14 of the IMDG
 Multimodal Dangerous Goods Form ("Number and kind of packages; description of goods") is free text,
 and today every system composes it slightly differently. OpenDGD fixes the composition so that a
 declaration expressed as structured data (`dangerousGoodsItem`) always produces byte-identical goods

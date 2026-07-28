@@ -2,7 +2,7 @@
 
 This walks through producing a Dangerous Goods Declaration (DGD) end to end, twice: once by hand in
 the browser playground, and once over the API. Both start from one OpenDGD document and finish with
-the completed IMO Multimodal Dangerous Goods Form.
+the completed IMDG Multimodal Dangerous Goods Form.
 
 The example throughout is a single flammable-liquid line (UN 1090, ACETONE). All party, vessel and
 reference data below is fictional.
@@ -24,7 +24,7 @@ Best when a person is preparing one declaration.
    asks for radionuclide, activity, category and transport index, and so on. Use **Add another
    dangerous goods line** for a multi-line unit.
 4. **Sign it.** Fill in the shipper declaration and, if you packed the unit, the packing certificate.
-5. **Watch box 14 compose.** As you type, the preview builds the full IMO form and composes the box-14
+5. **Watch box 14 compose.** As you type, the preview builds the full IMDG form and composes the box-14
    goods description with the canonical algorithm. The panel shows a green **well-formed** badge when
    the document has everything the standard requires.
 6. **Take the output.** Use **Copy JSON** or **Download .json** to keep the OpenDGD document. That JSON
@@ -49,7 +49,7 @@ for the full document. Minimally:
 ```json
 {
   "openDgdVersion": "1.0",
-  "documentType": "IMO_MULTIMODAL_DANGEROUS_GOODS_FORM",
+  "documentType": "IMDG_MULTIMODAL_DANGEROUS_GOODS_FORM",
   "regulation": { "code": "IMDG", "edition": "42-24" },
   "consignment": {
     "parties": { "shipper": { "name": "Example Shipper Ltd" } },

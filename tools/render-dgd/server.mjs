@@ -6,8 +6,8 @@
  * and the box-14 rendering algorithm (spec/rendering.md) are part of the standard.
  *
  *   POST /v1/declarations/conformance -> { conforms, findings }   (does it conform to the standard?)
- *   POST /v1/declarations/docx        -> the IMO form as .docx
- *   POST /v1/declarations/pdf         -> the IMO form as .pdf     (via unoserver)
+ *   POST /v1/declarations/docx        -> the IMDG form as .docx
+ *   POST /v1/declarations/pdf         -> the IMDG form as .pdf     (via unoserver)
  *   GET  /v1/schema                   -> the JSON Schema
  *   GET  /healthz
  */

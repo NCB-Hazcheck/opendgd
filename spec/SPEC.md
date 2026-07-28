@@ -10,7 +10,7 @@
 ## 1. Why OpenDGD exists
 
 Every year, millions of dangerous goods move by sea. Each consignment needs a **Dangerous Goods
-Declaration (DGD)**, in practice the IMO/UN *Multimodal Dangerous Goods Form* (IMDG Code 5.4.5), in
+Declaration (DGD)**, in practice the IMDG *Multimodal Dangerous Goods Form* (IMDG Code 5.4.5), in
 which the shipper certifies what the goods are, how they are classified, packed, marked and labelled.
 
 The *form* is standardised. The **data behind it is not.** Shippers, forwarders, carriers, terminals
@@ -23,7 +23,7 @@ error, and declarations that can't be checked automatically.
 
 1. A declaration can be exchanged as one **JSON document** that validates against a public schema.
 2. Any conforming system composes the **same box-14 goods description** from that data (§4).
-3. The declaration can be **validated** and **rendered to the IMO form** by any implementation.
+3. The declaration can be **validated** and **rendered to the IMDG form** by any implementation.
 
 OpenDGD is deliberately small and pragmatic. It is drawn from a production IMDG DGD generator and
 generalised into an open format that any vendor, carrier or authority can adopt without licensing a
@@ -33,7 +33,7 @@ commercial engine.
 
 - **Structured over rendered.** Producers supply *structured line data*; text is *composed*, not typed.
   A `descriptionOverride` escape hatch exists for legacy wording.
-- **The form is the anchor.** Every field maps to a numbered box of the IMO Multimodal DG Form.
+- **The form is the anchor.** Every field maps to a numbered box of the IMDG Multimodal Dangerous Goods Form.
 - **SI and ISO by default.** Masses in kilograms, capacity in litres, temperatures in Celsius, dates in
   ISO 8601, countries in ISO 3166, container size-types in ISO 6346. No locale ambiguity.
 - **Extensible, not sprawling.** v1.0 is IMDG/sea only. `regulation` and `modeOfTransport` are shaped so
@@ -51,7 +51,7 @@ A declaration is one JSON object:
 ```
 OpenDGD Declaration
 ├─ openDgdVersion            "1.0"
-├─ documentType             IMO_MULTIMODAL_DANGEROUS_GOODS_FORM
+├─ documentType             IMDG_MULTIMODAL_DANGEROUS_GOODS_FORM
 ├─ documentReference        the DGD's own id
 ├─ issueDate
 ├─ regulation               { code: IMDG, edition: "42-24" }
@@ -129,7 +129,7 @@ UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel dru
 
 ### 4.1 The rendered document is part of the standard
 
-The end product of OpenDGD is not only the JSON, it is the completed **IMO
+The end product of OpenDGD is not only the JSON, it is the completed **IMDG
 Multimodal Dangerous Goods Form**. The form template in [`form/`](form/) and the
 box-14 algorithm together define that document, so a given declaration produces
 the **same form on every conforming implementation**, and the same PDF.
@@ -150,8 +150,8 @@ document, then get the form back.
 - `POST /declarations/conformance`, does the document conform to the OpenDGD standard? (structure and
   required fields). Not a regulatory check of whether the goods are safe to ship, that is a validator's
   job (e.g. Hazcheck Validate).
-- `POST /declarations/docx`, the completed IMO form as an editable Word document.
-- `POST /declarations/pdf`, the completed IMO form as a PDF.
+- `POST /declarations/docx`, the completed IMDG form as an editable Word document.
+- `POST /declarations/pdf`, the completed IMDG form as a PDF.
 
 The reference render service is [`../tools/render-dgd`](../tools/render-dgd). Because the form template
 and the rendering algorithm are part of the standard, the DOCX and PDF are the same on every
@@ -164,7 +164,7 @@ conforming implementation.
   (`spec/conformance/`).
 - A **conforming server** implements `schema`, `conformance`, `docx` and `pdf` with the
   request/response shapes in `openapi.yaml`.
-- A **conforming form** is the completed IMO Multimodal Dangerous Goods Form produced by filling the
+- A **conforming form** is the completed IMDG Multimodal Dangerous Goods Form produced by filling the
   template in `form/` with the mapped fields, box 14 composed per §4. The same declaration yields the
   same document everywhere.
 
@@ -186,7 +186,7 @@ See [`../LICENSE`](../LICENSE) and [`../GOVERNANCE.md`](../GOVERNANCE.md).
 
 ## 9. Relationship to existing standards
 
-OpenDGD does not replace the IMDG Code, the IMO form, or EDI standards (UN/EDIFACT IFTMIN/IFTDGN, the
+OpenDGD does not replace the IMDG Code, the IMDG form, or EDI standards (UN/EDIFACT IFTMIN/IFTDGN, the
 DCSA data standards). It is a **modern, openly-licensed JSON representation** of the declaration that
-maps cleanly onto the IMO form and is intended to be convertible to/from those EDI formats. Where the
+maps cleanly onto the IMDG form and is intended to be convertible to/from those EDI formats. Where the
 IMDG Code and this document disagree, **the IMDG Code governs.**

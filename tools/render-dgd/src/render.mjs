@@ -1,5 +1,5 @@
 /*
- * @opendgd/render — fill the IMO Multimodal Dangerous Goods Form from an
+ * @opendgd/render — fill the IMDG Multimodal Dangerous Goods Form from an
  * OpenDGD document. Runs in Node and the browser (docxtemplater + pizzip).
  *
  *   import { renderDocx, renderBox14, mapToMergeData } from './render.mjs';

@@ -5,7 +5,7 @@ info:
   summary: The endpoints a user of the OpenDGD standard calls to check a declaration and get the form back.
   description: |
     OpenDGD defines an open, machine-readable format for a Dangerous Goods Declaration under the
-    IMDG Code (see `opendgd.schema.json`) and a canonical way to render it as the IMO Multimodal
+    IMDG Code (see `opendgd.schema.json`) and a canonical way to render it as the IMDG Multimodal
     Dangerous Goods Form (see `rendering.md` and `form/`). The rendered document is part of the
     standard, so the same declaration produces the same DOCX and the same PDF on any conforming
     implementation.
@@ -15,8 +15,8 @@ info:
       * **conformance**: does the document conform to the OpenDGD standard? (structure and required
         fields). This is *not* a regulatory check of whether the goods are safe to ship; that is a
         validator's job (e.g. Hazcheck Validate).
-      * **docx**: the completed IMO form as an editable Word document.
-      * **pdf**: the completed IMO form as a PDF.
+      * **docx**: the completed IMDG form as an editable Word document.
+      * **pdf**: the completed IMDG form as a PDF.
 
     The reference render service is `tools/render-dgd`. The canonical hosted instance is
     `https://api.opendgd.org`.
@@ -37,7 +37,7 @@ tags:
   - name: Spec
     description: Retrieve the machine-readable specification.
   - name: Declarations
-    description: Check conformance and render declarations to the IMO form.
+    description: Check conformance and render declarations to the IMDG form.
 
 paths:
   /schema:
@@ -83,10 +83,10 @@ paths:
     post:
       tags: [Declarations]
       operationId: exportDeclarationDocx
-      summary: Render a declaration to the IMO form as an editable DOCX.
+      summary: Render a declaration to the IMDG form as an editable DOCX.
       description: |
         Fills the standard form template (`form/`) from the declaration, composing the box-14 goods
-        description per `rendering.md`, and returns the IMO Multimodal Dangerous Goods Form as a Word
+        description per `rendering.md`, and returns the IMDG Multimodal Dangerous Goods Form as a Word
         document. The same declaration yields the same document on every conforming implementation.
       requestBody:
         required: true
@@ -95,7 +95,7 @@ paths:
             schema: { $ref: "opendgd.schema.json" }
       responses:
         "200":
-          description: The IMO form as a DOCX.
+          description: The IMDG form as a DOCX.
           content:
             application/vnd.openxmlformats-officedocument.wordprocessingml.document:
               schema: { type: string, format: binary }
@@ -109,9 +109,9 @@ paths:
     post:
       tags: [Declarations]
       operationId: exportDeclarationPdf
-      summary: Render a declaration to the IMO form as a PDF.
+      summary: Render a declaration to the IMDG form as a PDF.
       description: |
-        Fills the standard form template and returns the IMO Multimodal Dangerous Goods Form as a PDF,
+        Fills the standard form template and returns the IMDG Multimodal Dangerous Goods Form as a PDF,
         converted from the DOCX by a LibreOffice unoserver. The same declaration yields the same
         document on every conforming implementation. A validating implementation (e.g. Hazcheck
         Validate) may additionally return a QR-stamped, validated PDF.
@@ -122,7 +122,7 @@ paths:
             schema: { $ref: "opendgd.schema.json" }
       responses:
         "200":
-          description: The IMO form as a PDF.
+          description: The IMDG form as a PDF.
           content:
             application/pdf:
               schema: { type: string, format: binary }

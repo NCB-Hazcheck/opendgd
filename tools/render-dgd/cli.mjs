@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * opendgd-render — turn an OpenDGD document into the IMO Multimodal Dangerous
+ * opendgd-render — turn an OpenDGD document into the IMDG Multimodal Dangerous
  * Goods Form.
  *
  *   opendgd-render declaration.json                 # -> declaration.docx

@@ -1,5 +1,5 @@
 # OpenDGD: one image that serves the website and the render API.
-# The render API fills the IMO Multimodal Dangerous Goods Form from an OpenDGD
+# The render API fills the IMDG Multimodal Dangerous Goods Form from an OpenDGD
 # document (DOCX) and, via an external LibreOffice unoserver, returns PDF.
 
 # --- build the static site ---

@@ -362,7 +362,7 @@ section.band.flush { border-top: none; }
 .api-ep .chips span { font: 600 9.5px/1 var(--sans); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); border: 1px solid var(--rule); border-radius: 999px; padding: 5px 9px; }
 
 /* ============================================================
-   Playground — full IMO document builder (restyled, IDs kept)
+   Playground — full IMDG document builder (restyled, IDs kept)
    ============================================================ */
 .pg-page { max-width: 1240px; margin: 0 auto; padding: 32px 28px 80px; }
 .pg-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
@@ -408,7 +408,7 @@ section.band.flush { border-top: none; }
 .addline { margin: 0 14px 14px; font: 500 12.5px/1 var(--sans); padding: 10px 12px; border-radius: 8px; border: 1px dashed var(--rule); background: transparent; color: var(--ink-3); cursor: pointer; width: calc(100% - 28px); transition: border-color .14s, color .14s; }
 .addline:hover { border-color: var(--accent); color: var(--accent); }
 
-/* IMO form preview */
+/* IMDG form preview */
 .imo-wrap { border: 1px solid var(--rule); border-radius: 12px; background: var(--card); overflow: hidden; }
 .imo-cap { display: flex; justify-content: space-between; align-items: baseline; padding: 11px 14px; border-bottom: 1px solid var(--rule); background: var(--bg-alt); }
 .imo-cap .t { font: 600 9.5px/1 var(--sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }

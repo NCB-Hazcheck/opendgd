@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://opendgd.org/spec/v1.0/opendgd.schema.json",
   "title": "OpenDGD Declaration",
-  "description": "OpenDGD v1.0 — an open, machine-readable format for a Dangerous Goods Declaration under the IMDG Code, structured to render the IMO/UN Multimodal Dangerous Goods Form (IMDG Code 5.4.5). A producer supplies structured line data; any conforming implementation renders the same box-14 goods description via the canonical rendering algorithm (see rendering.md).",
+  "description": "OpenDGD v1.0 — an open, machine-readable format for a Dangerous Goods Declaration under the IMDG Code, structured to render the IMDG Multimodal Dangerous Goods Form (IMDG Code 5.4.5). A producer supplies structured line data; any conforming implementation renders the same box-14 goods description via the canonical rendering algorithm (see rendering.md).",
   "type": "object",
   "required": [
     "openDgdVersion",
@@ -19,8 +19,8 @@
     },
     "documentType": {
       "type": "string",
-      "description": "The physical form this declaration is rendered onto. Only the IMO/UN multimodal form is defined in v1.0.",
-      "enum": ["IMO_MULTIMODAL_DANGEROUS_GOODS_FORM"]
+      "description": "The physical form this declaration is rendered onto. Only the IMDG multimodal form is defined in v1.0.",
+      "enum": ["IMDG_MULTIMODAL_DANGEROUS_GOODS_FORM"]
     },
     "documentReference": {
       "type": "string",

@@ -1,4 +1,4 @@
-/* OpenDGD playground: full IMO document builder. Box 14 per spec/rendering.md */
+/* OpenDGD playground: full IMDG document builder. Box 14 per spec/rendering.md */
 (function () {
     var el = function (id) { return document.getElementById(id); };
     function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
@@ -197,7 +197,7 @@
     }
 
     function buildDoc() {
-      var doc = { openDgdVersion: '1.0', documentType: 'IMO_MULTIMODAL_DANGEROUS_GOODS_FORM', regulation: { code: 'IMDG', edition: '42-24' }, consignment: {} };
+      var doc = { openDgdVersion: '1.0', documentType: 'IMDG_MULTIMODAL_DANGEROUS_GOODS_FORM', regulation: { code: 'IMDG', edition: '42-24' }, consignment: {} };
       var c = doc.consignment;
       var parties = { shipper: {} };
       if (cv('s-shipper-name')) parties.shipper.name = cv('s-shipper-name');
@@ -423,7 +423,7 @@
       window.print();
     }
     // When the render service is on the same origin (the deployed site), these
-    // return the real IMO form. On a static host the fetch fails and PDF falls
+    // return the real IMDG form. On a static host the fetch fails and PDF falls
     // back to the browser print preview.
     function apiDownload(kind, filename) {
       return fetch('/v1/declarations/' + kind, {

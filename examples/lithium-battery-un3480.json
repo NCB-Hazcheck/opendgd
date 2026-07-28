@@ -1,6 +1,6 @@
 {
   "openDgdVersion": "1.0",
-  "documentType": "IMO_MULTIMODAL_DANGEROUS_GOODS_FORM",
+  "documentType": "IMDG_MULTIMODAL_DANGEROUS_GOODS_FORM",
   "documentReference": "DGD-EXAMPLE-0002",
   "issueDate": "2026-07-21",
   "regulation": {
