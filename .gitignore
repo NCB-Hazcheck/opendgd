@@ -26,3 +26,4 @@ v/
 # ...but the committed site brand assets are tracked
 !site/assets/img/
 !site/assets/img/*.png
+.vs/

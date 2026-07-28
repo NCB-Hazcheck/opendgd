@@ -50,6 +50,7 @@ const FAVICON =
   "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='7' y='7' width='18' height='18' rx='2' transform='rotate(45 16 16)' fill='%23D91F12'/></svg>";
 
 const NAV = [
+  { href: '/', label: 'Home', key: 'home' },
   { href: '/spec/', label: 'Spec', key: 'spec', lead: true },
   { href: '/guide/', label: 'Guide', key: 'guide' },
   { href: '/api/', label: 'API', key: 'api' },
