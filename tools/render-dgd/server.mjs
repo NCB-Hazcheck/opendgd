@@ -18,6 +18,7 @@ import { fileURLToPath } from 'url';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import { renderDocx } from './src/render.mjs';
+import { applyWatermark } from './src/watermark.mjs';
 import { docxToPdf, pdfBackend } from './src/unoserver.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -26,6 +27,11 @@ const ajv = new Ajv2020({ allErrors: true, strict: false });
 addFormats(ajv);
 const validate = ajv.compile(schema);
 const PORT = process.env.PORT || 8080;
+
+// Diagonal watermark stamped into every DOCX/PDF this service returns, so demo
+// downloads are visibly not transport documents. Set WATERMARK_TEXT to change
+// the wording, or to the empty string to disable (e.g. a production deployment).
+const WATERMARK_TEXT = process.env.WATERMARK_TEXT != null ? process.env.WATERMARK_TEXT : 'SPECIMEN';
 
 // When SITE_DIR is set, this one process also serves the static website, so the
 // site and its /v1 API share an origin (the playground can call /v1 directly).
@@ -120,10 +126,10 @@ const server = http.createServer(async (req, res) => {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'Content-Disposition': 'attachment; filename="DangerousGoodsDeclaration.docx"',
       });
-      return res.end(renderDocx(doc));
+      return res.end(applyWatermark(renderDocx(doc), WATERMARK_TEXT));
     }
     if (url.endsWith('/declarations/pdf')) {
-      const pdf = await docxToPdf(renderDocx(doc));
+      const pdf = await docxToPdf(applyWatermark(renderDocx(doc), WATERMARK_TEXT));
       cors(res);
       res.writeHead(200, { 'Content-Type': 'application/pdf', 'Content-Disposition': 'attachment; filename="DangerousGoodsDeclaration.pdf"' });
       return res.end(pdf);

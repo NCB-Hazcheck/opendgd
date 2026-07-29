@@ -336,9 +336,9 @@
     /* examples */
     function setC(map) { CFIELDS.forEach(function (id) { if (el(id)) el(id).value = map[id] != null ? map[id] : ''; }); }
     var EX = {
-      acetone: {
+      aluminium: {
         c: { 's-shipper-name': 'Example Shipper Ltd', 's-shipper-addr': '1 Example Way, Felixstowe, IP11 0AA', 's-consignee-name': 'Example Consignee BV', 's-consignee-addr': 'Example Kade 1, Rotterdam', 's-carrier-name': 'Example Container Line', 's-tdn': 'BOL-EXAMPLE-0001', 's-shipref': 'REF-EXAMPLE-0001', 's-voyage': 'V001', 's-vessel': 'MV EXAMPLE', 's-sailing': '2026-07-25', 's-pol': 'Felixstowe', 's-pod': 'Rotterdam', 's-dest': 'Rotterdam', 's-ctu': 'EXMU 000000-0', 's-seal': 'SEAL-0001', 's-size': "40' GP", 's-tare': '3800', 's-gross': '', 's-decl-company': 'Example Shipper Ltd', 's-decl-name': 'A. Example, Shipping Manager', 's-decl-place': 'Felixstowe, 2026-07-21', 's-decl-sign': 'A EXAMPLE', 's-pack-company': 'Example Shipper Ltd', 's-pack-name': 'B. Example, Supervisor' },
-        lines: [merge({ un: '1090', pg: 'II', psn: 'ACETONE', cls: '3', marks: 'EXAMPLE LOT 44', npk: '10', kind: 'Steel drums', outer: '1A1', gross: '2350', net: '2000', cube: '2.4', flash: '-17', emsf: 'F-E', emss: 'S-D' })]
+        lines: [merge({ un: '1309', pg: 'III', psn: 'ALUMINIUM POWDER, COATED', cls: '4.1', marks: 'EXAMPLE LOT 44', npk: '10', kind: 'Steel drums', outer: '1A1', gross: '2350', net: '2000', cube: '2.4', emsf: 'F-G', emss: 'S-G' })]
       },
       lithium: {
         c: { 's-shipper-name': 'Example Cells GmbH', 's-shipper-addr': 'Example Strasse 5, Hamburg', 's-consignee-name': 'Example Assembly Co', 's-consignee-addr': 'Charleston, SC', 's-carrier-name': 'Example Ocean Line', 's-tdn': 'BOL-EXAMPLE-0002', 's-voyage': 'S001', 's-vessel': 'MV SAMPLE', 's-sailing': '2026-08-02', 's-pol': 'Hamburg', 's-pod': 'Charleston', 's-dest': 'Charleston', 's-ctu': 'EXLU 000000-0', 's-seal': 'SEAL-0002', 's-size': "20' GP", 's-tare': '2200', 's-gross': '', 's-decl-company': 'Example Cells GmbH', 's-decl-name': 'C. Example, DG Safety Adviser', 's-decl-place': 'Hamburg, 2026-07-21', 's-decl-sign': 'C EXAMPLE', 's-pack-company': '', 's-pack-name': '' },
@@ -413,6 +413,7 @@
         + '</div>'
         + '<div class="pf-foot">* DANGEROUS GOODS: You must specify UN No., Proper Shipping Name, hazard class, Packing Group (where assigned) and marine pollutant, and observe the mandatory requirements.</div>'
         + '<div class="pf-watermark">Preview only, not validated, not valid for transport</div>'
+        + '<div class="pf-specimen" aria-hidden="true">SPECIMEN</div>'
         + '</div>';
     }
 
@@ -447,5 +448,5 @@
     });
 
     renderLineEditor();
-    loadEx('acetone');
+    loadEx('aluminium');
   })();

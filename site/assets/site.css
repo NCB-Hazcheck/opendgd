@@ -517,3 +517,5 @@ footer.site .wrap { padding: 52px 28px 30px; }
 .pf-sign { min-height: 20mm; }
 .pf-foot { font-size: 5.6pt; padding: 3pt 1pt 0; }
 .pf-watermark { text-align: center; font-size: 6pt; letter-spacing: 0.14em; text-transform: uppercase; padding-top: 4pt; }
+/* Diagonal SPECIMEN across the printed page, matching the render service's DOCX/PDF watermark. */
+.pf-specimen { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font: 700 92pt/1 var(--sans); letter-spacing: 0.08em; color: rgba(128, 128, 128, 0.22); white-space: nowrap; pointer-events: none; z-index: 9999; -webkit-print-color-adjust: exact; print-color-adjust: exact; }

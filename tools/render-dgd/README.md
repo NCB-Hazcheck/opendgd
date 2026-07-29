@@ -50,6 +50,19 @@ curl -X POST http://localhost:8080/v1/declarations/pdf \
   --data @../../examples/acetone-un1090.json -o DangerousGoodsDeclaration.pdf
 ```
 
+## Watermark
+
+The **service** stamps a diagonal watermark (default `SPECIMEN`) into every DOCX
+and PDF it returns, so documents downloaded from the hosted demo are visibly not
+transport documents. Configure with the `WATERMARK_TEXT` env var:
+
+```bash
+export WATERMARK_TEXT="DRAFT"   # change the wording
+export WATERMARK_TEXT=""        # disable (production deployments)
+```
+
+The **library and CLI** never watermark — implementations render the real form.
+
 ## DOCX to PDF
 
 PDF conversion is done by a LibreOffice **unoserver**, the same service NCB
