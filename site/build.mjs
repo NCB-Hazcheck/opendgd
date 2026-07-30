@@ -57,14 +57,11 @@ const NAV = [
   { href: '/playground/', label: 'Playground', key: 'playground' },
 ];
 
-/* Announcement bar: v1.0 release notice + subscribe (saved server-side). */
+/* Announcement bar: v1.0 release notice + follow-on-GitHub link. */
 const ANNOUNCE = `<div class="announce">
     <div class="announce-inner">
       <span class="announce-msg">OpenDGD v1.0 is here — get spec updates and new NCB Hazcheck tools.</span>
-      <form data-subscribe>
-        <input type="email" name="email" placeholder="you@company.com" aria-label="Email address" required>
-        <button type="submit">Subscribe</button>
-      </form>
+      <a class="announce-link" href="${GH}" target="_blank" rel="noopener">Watch on GitHub for updates →</a>
     </div>
   </div>`;
 
@@ -141,7 +138,7 @@ const THEME_PREPAINT = `<script>
   })();
 </script>`;
 
-/* Runtime: theme toggle (persisted), and the static-safe subscribe form. */
+/* Runtime: theme toggle (persisted). */
 const SITE_SCRIPT = `<script>
   (function () {
     var root = document.documentElement;
@@ -154,33 +151,6 @@ const SITE_SCRIPT = `<script>
       root.setAttribute('data-theme', next);
       try { localStorage.setItem('opendgd-theme', next); } catch (e) {}
       glyph();
-    });
-    document.querySelectorAll('form[data-subscribe]').forEach(function (f) {
-      function note(text, ok) {
-        var m = f.parentElement.querySelector('.submsg');
-        if (!m) { m = document.createElement('span'); m.className = 'submsg'; f.parentElement.appendChild(m); }
-        m.textContent = text;
-        m.style.color = ok ? 'var(--accent-on-dark)' : '#FFB4AE';
-      }
-      f.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var input = f.querySelector('input[name=email]');
-        var email = (input && input.value || '').trim();
-        var btn = f.querySelector('button');
-        if (btn) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = '…'; }
-        fetch('/subscribe', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: email }),
-        }).then(function (r) {
-          return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok && d.ok, error: d.error }; });
-        }).then(function (res) {
-          if (res.ok) { f.outerHTML = '<span class="msg">Thanks — you\\'re on the list.</span>'; }
-          else { if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label || 'Subscribe'; } note(res.error || 'Something went wrong.'); }
-        }).catch(function () {
-          if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label || 'Subscribe'; }
-          note('Network error — please try again.');
-        });
-      });
     });
   })();
 </script>`;
