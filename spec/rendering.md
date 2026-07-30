@@ -59,7 +59,7 @@ Evaluate in this exact order; skip any whose data is absent.
 | 26 | Excepted quantity | `qualifiers.isExceptedQuantity` | `Dangerous goods in excepted quantities` | `. ` |
 | 27 | Net explosive content | `weights.netExplosiveContentKg` (Class 1) | `Net explosive content: 12 kg` | `, ` |
 | 28 | Inner packaging | `packaging.innerPackagingCode` + count | `Inner packaging: 4 x Bottle` | `, ` |
-| 29 | Outer packaging | `packaging.outerPackagingCode` + count | `10 x 1A1 Steel drum` | `, ` |
+| 29 | Outer packaging | `packaging.outerPackagingCode` + count | `10 x 1A1 Steel drums` | `, ` |
 | 30 | End of holding time | `endOfHoldingTime` | `END OF HOLDING TIME: 30/9/2026 (DD/MM/YYYY)` | `, ` |
 | 31 | Approval reference | `packagingApprovalReference` | `Approval Ref: GB/12345` | `. ` |
 | 32 | Total capacity | `weights.capacityLitres` | `Total capacity 2000 Litres` | `, ` |
@@ -82,7 +82,7 @@ Evaluate in this exact order; skip any whose data is absent.
 Structured input →
 
 ```
-UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drum.
+UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drums.
 ```
 
 Cell layout for box 14 (marks and package line sit above the composed sentence):
@@ -90,7 +90,7 @@ Cell layout for box 14 (marks and package line sit above the composed sentence):
 ```
 EXAMPLE LOT 44
 10 Steel drums
-UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drum.
+UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drums.
 ```
 
 ## Cell layout (informative)

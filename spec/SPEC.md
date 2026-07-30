@@ -124,7 +124,7 @@ data always produces identical goods descriptions. It is normative and lives in
 Example (`examples/acetone-un1090.json`):
 
 ```
-UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drum.
+UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drums.
 ```
 
 ### 4.1 The rendered document is part of the standard

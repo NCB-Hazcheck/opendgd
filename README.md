@@ -114,7 +114,7 @@ together.
 renders box 14 as:
 
 ```
-UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drum.
+UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drums.
 ```
 
 ## Contributing

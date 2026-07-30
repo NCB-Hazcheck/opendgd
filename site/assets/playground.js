@@ -107,7 +107,6 @@
     }
     function classText(arr) { if (!arr.length) return ''; return arr.length > 1 ? arr[0] + ' (' + arr.slice(1).join(',') + ')' : arr[0]; }
     function unText(raw) { var m = String(raw || '').match(/(UN|NA)?\s*(\d{3,4})/i); if (!m) return raw ? String(raw).trim() : ''; return ((m[1] && m[1].toUpperCase() === 'NA') ? 'NA' : 'UN') + ' ' + m[2]; }
-    function singular(k) { return String(k || '').replace(/s\b/, ''); }
 
     function renderBox14(line) {
       var segs = [];
@@ -134,7 +133,7 @@
       if (line.lq) push('Limited Quantity');
       if (line.eq) segs.push({ t: 'Dangerous goods in excepted quantities', s: '. ' });
       if (toNum(line.nec) !== null) push('Net explosive content: ' + toNum(line.nec) + ' kg');
-      if (line.outer) { var np = toNum(line.npk); push((np !== null ? np + ' x ' : '') + line.outer + (line.kind ? ' ' + singular(line.kind) : '')); }
+      if (line.outer) { var np = toNum(line.npk); push((np !== null ? np + ' x ' : '') + line.outer + (line.kind ? ' ' + line.kind : '')); }
       if (toNum(line.cap) !== null) push('Total capacity ' + toNum(line.cap) + ' Litres');
       if (!segs.length) return '';
       var out = ''; for (var i = 0; i < segs.length; i++) out += (i === 0 ? '' : segs[i].s) + segs[i].t;

@@ -31,7 +31,6 @@ const classText = (arr) => {
   if (!arr || !arr.length) return '';
   return arr.length > 1 ? arr[0] + ' (' + arr.slice(1).join(',') + ')' : arr[0];
 };
-const singular = (k) => String(k || '').replace(/s\b/, '');
 
 export function renderBox14(item) {
   const q = item.qualifiers || {};
@@ -92,7 +91,7 @@ export function renderBox14(item) {
   if (num(w.netExplosiveContentKg) !== null) push('Net explosive content: ' + w.netExplosiveContentKg + ' kg');
   const pkg = item.packaging || {};
   if (pkg.innerPackagingCode) push('Inner packaging: ' + (pkg.numberOfInnerPackages != null ? pkg.numberOfInnerPackages + ' x ' : '') + pkg.innerPackagingCode);
-  if (pkg.outerPackagingCode) push((pkg.numberOfPackages != null ? pkg.numberOfPackages + ' x ' : '') + pkg.outerPackagingCode + (pkg.kindOfPackages ? ' ' + singular(pkg.kindOfPackages) : ''));
+  if (pkg.outerPackagingCode) push((pkg.numberOfPackages != null ? pkg.numberOfPackages + ' x ' : '') + pkg.outerPackagingCode + (pkg.kindOfPackages ? ' ' + pkg.kindOfPackages : ''));
   if (item.endOfHoldingTime) {
     const d = new Date(item.endOfHoldingTime + 'T00:00:00Z');
     if (!isNaN(d)) push('END OF HOLDING TIME: ' + d.getUTCDate() + '/' + (d.getUTCMonth() + 1) + '/' + d.getUTCFullYear() + ' (DD/MM/YYYY)');

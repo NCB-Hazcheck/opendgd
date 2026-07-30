@@ -104,7 +104,7 @@ curl -X POST https://api.opendgd.org/v1/declarations/pdf \
 Box 14 on the returned form reads:
 
 ```
-UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drum.
+UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drums.
 ```
 
 Because the form template and the rendering algorithm are part of the standard, the same declaration

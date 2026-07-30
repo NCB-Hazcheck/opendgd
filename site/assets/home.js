@@ -28,9 +28,9 @@
     },
     opendgd: {
       rows: [
-        { system: "Shipper's ERP", text: "UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drum.", note: "Composed from the same JSON by the canonical algorithm.", ok: true },
-        { system: "Forwarder's portal", text: "UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drum.", note: "Byte-for-byte identical, no mapping layer needed.", ok: true },
-        { system: "Carrier's booking", text: "UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drum.", note: "Machine-checkable against the IMDG Code on arrival.", ok: true }
+        { system: "Shipper's ERP", text: "UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drums.", note: "Composed from the same JSON by the canonical algorithm.", ok: true },
+        { system: "Forwarder's portal", text: "UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drums.", note: "Byte-for-byte identical, no mapping layer needed.", ok: true },
+        { system: "Carrier's booking", text: "UN 1090, ACETONE, Class 3, PG II, (-17°C c.c.), EmS F-E,S-D, 10 x 1A1 Steel drums.", note: "Machine-checkable against the IMDG Code on arrival.", ok: true }
       ],
       summary: "One declaration, one description, on every system. Nothing to reconcile, and the data underneath can be checked by machine."
     }
