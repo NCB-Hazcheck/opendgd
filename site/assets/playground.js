@@ -4,7 +4,7 @@
     function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
     function toNum(v) { if (v === '' || v == null) return null; var n = Number(v); return isNaN(n) ? null : n; }
 
-    var CFIELDS = ['s-shipper-name','s-shipper-addr','s-consignee-name','s-consignee-addr','s-carrier-name','s-tdn','s-shipref','s-fwdref','s-voyage','s-vessel','s-sailing','s-pol','s-pod','s-dest','s-ahi','s-ctu','s-seal','s-size','s-tare','s-gross','s-decl-company','s-decl-name','s-decl-place','s-decl-sign','s-pack-company','s-pack-name'];
+    var CFIELDS = ['s-shipper-name','s-shipper-addr','s-consignee-name','s-consignee-addr','s-carrier-name','s-tdn','s-shipref','s-fwdref','s-voyage','s-vessel','s-sailing','s-pol','s-pod','s-dest','s-ahi','s-ctu','s-seal','s-size','s-tare','s-gross','s-decl-company','s-decl-name','s-decl-place','s-decl-sign','s-pack-company','s-pack-name','s-pack-place','s-pack-sign'];
     function cv(id) { var e = el(id); return e ? (e.value || '').trim() : ''; }
 
     /* dangerous goods line editor, built from a spec so add/remove is easy */
@@ -242,6 +242,8 @@
       var pc = {};
       if (cv('s-pack-company')) pc.companyName = cv('s-pack-company');
       if (cv('s-pack-name')) pc.declarantName = cv('s-pack-name');
+      if (cv('s-pack-place')) pc.placeAndDate = cv('s-pack-place');
+      if (cv('s-pack-sign')) pc.signature = cv('s-pack-sign');
       if (Object.keys(pc).length) certs.containerPackingCertificate = pc;
       if (Object.keys(certs).length) c.certificates = certs;
 
@@ -310,7 +312,7 @@
 
       var sd = certs.shipperDeclaration || {}, pc = certs.containerPackingCertificate || {};
       var sdText = [sd.companyName, sd.declarantName, sd.placeAndDate, sd.signature].filter(Boolean).join('\n');
-      var pcText = [pc.companyName, pc.declarantName].filter(Boolean).join('\n');
+      var pcText = [pc.companyName, pc.declarantName, pc.placeAndDate, pc.signature].filter(Boolean).join('\n');
       rows.push('<div class="r" style="grid-template-columns:1fr 1fr 1fr;border-bottom:1.5px solid var(--hairline-strong)">' +
         box('', '20', 'Packing certificate', pcText) +
         box('', '21', 'Receiving organisation receipt', '') +
@@ -336,7 +338,7 @@
     function setC(map) { CFIELDS.forEach(function (id) { if (el(id)) el(id).value = map[id] != null ? map[id] : ''; }); }
     var EX = {
       aluminium: {
-        c: { 's-shipper-name': 'Example Shipper Ltd', 's-shipper-addr': '1 Example Way, Felixstowe, IP11 0AA', 's-consignee-name': 'Example Consignee BV', 's-consignee-addr': 'Example Kade 1, Rotterdam', 's-carrier-name': 'Example Container Line', 's-tdn': 'BOL-EXAMPLE-0001', 's-shipref': 'REF-EXAMPLE-0001', 's-voyage': 'V001', 's-vessel': 'MV EXAMPLE', 's-sailing': '2026-07-25', 's-pol': 'Felixstowe', 's-pod': 'Rotterdam', 's-dest': 'Rotterdam', 's-ctu': 'EXMU 000000-0', 's-seal': 'SEAL-0001', 's-size': "40' GP", 's-tare': '3800', 's-gross': '', 's-decl-company': 'Example Shipper Ltd', 's-decl-name': 'A. Example, Shipping Manager', 's-decl-place': 'Felixstowe, 2026-07-21', 's-decl-sign': 'A EXAMPLE', 's-pack-company': 'Example Shipper Ltd', 's-pack-name': 'B. Example, Supervisor' },
+        c: { 's-shipper-name': 'Example Shipper Ltd', 's-shipper-addr': '1 Example Way, Felixstowe, IP11 0AA', 's-consignee-name': 'Example Consignee BV', 's-consignee-addr': 'Example Kade 1, Rotterdam', 's-carrier-name': 'Example Container Line', 's-tdn': 'BOL-EXAMPLE-0001', 's-shipref': 'REF-EXAMPLE-0001', 's-voyage': 'V001', 's-vessel': 'MV EXAMPLE', 's-sailing': '2026-07-25', 's-pol': 'Felixstowe', 's-pod': 'Rotterdam', 's-dest': 'Rotterdam', 's-ctu': 'EXMU 000000-0', 's-seal': 'SEAL-0001', 's-size': "40' GP", 's-tare': '3800', 's-gross': '', 's-decl-company': 'Example Shipper Ltd', 's-decl-name': 'A. Example, Shipping Manager', 's-decl-place': 'Felixstowe, 2026-07-21', 's-decl-sign': 'A EXAMPLE', 's-pack-company': 'Example Shipper Ltd', 's-pack-name': 'B. Example, Supervisor', 's-pack-place': 'Felixstowe, 2026-07-21', 's-pack-sign': 'B EXAMPLE' },
         lines: [merge({ un: '1309', pg: 'III', psn: 'ALUMINIUM POWDER, COATED', cls: '4.1', marks: 'EXAMPLE LOT 44', npk: '10', kind: 'Steel drums', outer: '1A1', gross: '2350', net: '2000', cube: '2.4', emsf: 'F-G', emss: 'S-G' })]
       },
       lithium: {
@@ -406,7 +408,7 @@
         + row(cell('<b>15</b> Container id. No. / vehicle reg. No.', u.identificationNumber) + cell('<b>16</b> Seal number(s)', u.sealNumbers) + cell('<b>17</b> Container / vehicle size and type', u.sizeType) + cell('<b>18</b> Tare mass (kg)', u.tareMassKg != null ? u.tareMassKg : '') + cell('<b>19</b> Total gross mass incl. tare (kg)', u.totalGrossMassKg != null ? u.totalGrossMassKg : ''), '1.5fr 1fr 1.1fr .8fr 1fr')
         + '<div class="pf-row" style="grid-template-columns:1fr"><div class="pf-cell"><span class="pf-lbl"><b>22</b> Shipper / Consignor declaration</span><div class="pf-legal">' + SHIP + '</div><div class="pf-val" style="margin-top:2pt">' + esc([sd.companyName, sd.declarantName].filter(Boolean).join(', ')) + '</div><div class="pf-val">' + esc([sd.placeAndDate, sd.signature].filter(Boolean).join('     ')) + '</div></div></div>'
         + row(
-            '<div class="pf-cell pf-sign"><span class="pf-lbl"><b>20</b> Container / Vehicle Packing Certificate</span><div class="pf-legal">' + PACK + '</div><div class="pf-val" style="margin-top:2pt">' + esc([pcert.companyName, pcert.declarantName].filter(Boolean).join(', ')) + '</div></div>'
+            '<div class="pf-cell pf-sign"><span class="pf-lbl"><b>20</b> Container / Vehicle Packing Certificate</span><div class="pf-legal">' + PACK + '</div><div class="pf-val" style="margin-top:2pt">' + esc([pcert.companyName, pcert.declarantName].filter(Boolean).join(', ')) + '</div><div class="pf-val">' + esc([pcert.placeAndDate, pcert.signature].filter(Boolean).join('     ')) + '</div></div>'
           + '<div class="pf-cell pf-sign"><span class="pf-lbl"><b>21</b> Receiving Organisation Receipt</span><div class="pf-legal">' + RECV + '</div><div class="pf-val">' + esc(ro.remarks || '') + '</div></div>',
             '1fr 1fr')
         + '</div>'
