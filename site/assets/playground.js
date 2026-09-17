@@ -27,6 +27,7 @@
       { f: 'cap', l: 'Capacity L', ph: 'liquids' },
       { f: 'emsf', l: 'EmS fire', ph: 'F-E' },
       { f: 'emss', l: 'EmS spillage', ph: 'S-D' },
+      { f: 'spn', l: 'Special provisions / declarations', ph: 'e.g. 376, or full text — separate with ;', w: 3 },
       { f: 'controlTemp', l: 'Control temp C', ph: 'self-reactive', showFor: ['4.1', '5.2'] },
       { f: 'emergencyTemp', l: 'Emergency temp C', ph: '', showFor: ['4.1', '5.2'] },
       { f: 'radionuclide', l: 'Radionuclide', ph: 'Cobalt-60', showFor: ['7'] },
@@ -135,6 +136,10 @@
       if (toNum(line.nec) !== null) push('Net explosive content: ' + toNum(line.nec) + ' kg');
       if (line.outer) { var np = toNum(line.npk); push((np !== null ? np + ' x ' : '') + line.outer + (line.kind ? ' ' + line.kind : '')); }
       if (toNum(line.cap) !== null) push('Total capacity ' + toNum(line.cap) + ' Litres');
+      String(line.spn || '').split(';').forEach(function (sp) {
+        sp = sp.trim();
+        if (sp) segs.push({ t: /^\d+$/.test(sp) ? 'Transport in accordance with special provision ' + sp : sp, s: '. ' });
+      });
       if (!segs.length) return '';
       var out = ''; for (var i = 0; i < segs.length; i++) out += (i === 0 ? '' : segs[i].s) + segs[i].t;
       return out + '.';
@@ -161,6 +166,8 @@
       if (toNum(line.cap) !== null) w.capacityLitres = toNum(line.cap);
       if (Object.keys(w).length) it.weights = w;
       if (toNum(line.cube) !== null) it.cubeM3 = toNum(line.cube);
+      var spn = String(line.spn || '').split(';').map(function (s) { return s.trim(); }).filter(Boolean);
+      if (spn.length) it.specialProvisionNotes = spn;
       if (line.mp) it.marinePollutant = true;
       if (toNum(line.flash) !== null) it.flashpoint = { valueCelsius: toNum(line.flash), cup: 'closed' };
       var ems = {}; if (line.emsf) ems.fire = line.emsf; if (line.emss) ems.spillage = line.emss;
@@ -344,7 +351,7 @@
       lithium: {
         c: { 's-shipper-name': 'Example Cells GmbH', 's-shipper-addr': 'Example Strasse 5, Hamburg', 's-consignee-name': 'Example Assembly Co', 's-consignee-addr': 'Charleston, SC', 's-carrier-name': 'Example Ocean Line', 's-tdn': 'BOL-EXAMPLE-0002', 's-voyage': 'S001', 's-vessel': 'MV SAMPLE', 's-sailing': '2026-08-02', 's-pol': 'Hamburg', 's-pod': 'Charleston', 's-dest': 'Charleston', 's-ctu': 'EXLU 000000-0', 's-seal': 'SEAL-0002', 's-size': "20' GP", 's-tare': '2200', 's-gross': '', 's-decl-company': 'Example Cells GmbH', 's-decl-name': 'C. Example, DG Safety Adviser', 's-decl-place': 'Hamburg, 2026-07-21', 's-decl-sign': 'C EXAMPLE', 's-pack-company': '', 's-pack-name': '' },
         lines: [
-          merge({ un: '3480', psn: 'LITHIUM ION BATTERIES', cls: '9', marks: 'EXAMPLE PALLET 01', npk: '12', kind: 'Fibreboard boxes', outer: '4G', gross: '6500', net: '5400', cube: '18.5', emsf: 'F-A', emss: 'S-I' }),
+          merge({ un: '3480', psn: 'LITHIUM ION BATTERIES', cls: '9', marks: 'EXAMPLE PALLET 01', npk: '12', kind: 'Fibreboard boxes', outer: '4G', gross: '6500', net: '5400', cube: '18.5', emsf: 'F-A', emss: 'S-I', spn: '376' }),
           merge({ un: '1263', pg: 'III', psn: 'PAINT', cls: '3', marks: 'EXAMPLE TOUCHUP', npk: '4', kind: 'Steel cans', outer: '1A1', gross: '80', net: '60', cube: '0.3', flash: '23', emsf: 'F-E', emss: 'S-E' })
         ]
       },
@@ -414,7 +421,6 @@
         + '</div>'
         + '<div class="pf-foot">* DANGEROUS GOODS: You must specify UN No., Proper Shipping Name, hazard class, Packing Group (where assigned) and marine pollutant, and observe the mandatory requirements.</div>'
         + '<div class="pf-watermark">Preview only, not validated, not valid for transport</div>'
-        + '<div class="pf-specimen" aria-hidden="true">SPECIMEN</div>'
         + '</div>';
     }
 
