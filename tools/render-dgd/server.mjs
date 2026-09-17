@@ -28,10 +28,10 @@ addFormats(ajv);
 const validate = ajv.compile(schema);
 const PORT = process.env.PORT || 8080;
 
-// Diagonal watermark stamped into every DOCX/PDF this service returns, so demo
-// downloads are visibly not transport documents. Set WATERMARK_TEXT to change
-// the wording, or to the empty string to disable (e.g. a production deployment).
-const WATERMARK_TEXT = process.env.WATERMARK_TEXT != null ? process.env.WATERMARK_TEXT : 'SPECIMEN';
+// Optional diagonal watermark stamped into every DOCX/PDF this service returns.
+// Off by default; set WATERMARK_TEXT (e.g. 'SPECIMEN') to enable it on a
+// deployment whose outputs should be visibly not transport documents.
+const WATERMARK_TEXT = process.env.WATERMARK_TEXT || '';
 
 // When SITE_DIR is set, this one process also serves the static website, so the
 // site and its /v1 API share an origin (the playground can call /v1 directly).

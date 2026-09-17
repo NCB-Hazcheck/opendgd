@@ -52,13 +52,12 @@ curl -X POST http://localhost:8080/v1/declarations/pdf \
 
 ## Watermark
 
-The **service** stamps a diagonal watermark (default `SPECIMEN`) into every DOCX
-and PDF it returns, so documents downloaded from the hosted demo are visibly not
-transport documents. Configure with the `WATERMARK_TEXT` env var:
+The **service** can stamp a diagonal watermark into every DOCX and PDF it
+returns. It is **off by default**; enable it with the `WATERMARK_TEXT` env var
+on a deployment whose outputs should be visibly not transport documents:
 
 ```bash
-export WATERMARK_TEXT="DRAFT"   # change the wording
-export WATERMARK_TEXT=""        # disable (production deployments)
+export WATERMARK_TEXT="SPECIMEN"   # stamp every DOCX/PDF the service returns
 ```
 
 The **library and CLI** never watermark — implementations render the real form.
